@@ -17,6 +17,7 @@ func _init():
 		"res://scenes/hub/oasis_hub.tscn",
 		"res://scenes/hub/simple_hub.tscn",
 		"res://scenes/hub/oasis_hub_advanced.tscn",
+		"res://scenes/hub/oasis_master_rpo_movie.tscn",
 		"res://scenes/key_copper/copper_key_level.tscn",
 		"res://scenes/demos/scene_01_the_stacks.tscn",
 		"res://scenes/demos/scene_02_hallidays_journal.tscn",

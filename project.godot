@@ -16,7 +16,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="Projet OASIS VR"
 config/description="Ready Player One inspired VR game for Meta Quest 3S built with Father-Son pair programming."
-run/main_scene="res://scenes/hub/oasis_hub_advanced.tscn"
+run/main_scene="res://scenes/hub/oasis_master_rpo_movie.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
 [input]
