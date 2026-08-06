@@ -1,8 +1,7 @@
 extends Node3D
 
 # ==============================================================================
-# PROJET OASIS - DeLorean Time Machine (Null-Safe Construction Shader)
-# Dynamically resolves MeshInstance3D and prevents null reference exceptions.
+# PROJET OASIS - DeLorean Time Machine (Null-Safe Construction Shader & Driver Viseme)
 # ==============================================================================
 
 @export var construction_duration: float = 2.0
@@ -13,12 +12,11 @@ func _ready() -> void:
 	play_construction_effect()
 
 func _get_target_mesh() -> MeshInstance3D:
-	if has_node("CarMesh/Body"):
-		return get_node("CarMesh/Body") as MeshInstance3D
-	elif has_node("Body"):
+	if has_node("Body"):
 		return get_node("Body") as MeshInstance3D
+	elif has_node("CarMesh/Body"):
+		return get_node("CarMesh/Body") as MeshInstance3D
 	
-	# Fallback: search for any MeshInstance3D child node
 	var meshes = find_children("*", "MeshInstance3D", true, false)
 	if meshes.size() > 0:
 		return meshes[0] as MeshInstance3D
@@ -31,7 +29,7 @@ func play_construction_effect() -> void:
 		if mat == null and mesh_node.mesh != null:
 			mat = mesh_node.mesh.surface_get_material(0)
 			
-		if mat and mat is ShaderMaterial:
+		if mat != null and mat is ShaderMaterial:
 			shader_material = mat
 			shader_material.set_shader_parameter("construction_progress", 0.0)
 			var tween = create_tween()

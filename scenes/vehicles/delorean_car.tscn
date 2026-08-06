@@ -90,3 +90,14 @@ text = "PARZIVAL'S DELOREAN TIME MACHINE
 '88 MPH Into the OASIS!'"
 font_size = 36
 outline_size = 8
+
+[node name="Driver" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+
+[node name="VisemeLabel" type="Label3D" parent="Driver"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+billboard = 1
+pixel_size = 0.012
+text = "PARZIVAL: First key is earned!"
+font_size = 28
+outline_size = 6
