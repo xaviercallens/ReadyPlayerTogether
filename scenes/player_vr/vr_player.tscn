@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://oasis_vr_player_001"]
+
+[ext_resource type="Script" path="res://scripts/player_vr/vr_player.gd" id="1_vr_script"]
+
+[node name="VRPlayer" type="XROrigin3D"]
+script = ExtResource("1_vr_script")
+
+[node name="XRCamera3D" type="XRCamera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+current = true
+
+[node name="LeftHandController" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 1.2, -0.4)
+tracker = &"left_hand"
+pose = &"aim"
+
+[node name="RightHandController" type="XRController3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.2, -0.4)
+tracker = &"right_hand"
+pose = &"aim"

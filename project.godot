@@ -1,0 +1,23 @@
+; Engine configuration file for Projet OASIS VR
+; OpenXR Enabled for Meta Quest 3S / Quest Link / Standalone
+
+config_version=5
+
+[application]
+
+config/name="Projet OASIS VR"
+config/description="Ready Player One inspired VR game for Meta Quest 3S built with Father-Son pair programming."
+run/main_scene="res://scenes/hub/oasis_hub.tscn"
+config/features=PackedStringArray("4.2", "Mobile")
+
+[xr]
+
+openxr/enabled=true
+openxr/reference_space=2
+shaders/enabled=true
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.05, 0.02, 0.1, 1)
