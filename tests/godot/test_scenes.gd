@@ -25,7 +25,11 @@ func _init():
 		"res://scenes/demos/scene_07_overlook_hotel.tscn",
 		"res://scenes/demos/scene_08_ioi_citadel.tscn",
 		"res://scenes/demos/scene_09_crystal_castle.tscn",
-		"res://scenes/demos/scene_10_easter_egg.tscn"
+		"res://scenes/demos/scene_10_easter_egg.tscn",
+		"res://scenes/demos/scene_11_xr_dojo.tscn",
+		"res://scenes/artifacts/zemeckis_cube.tscn",
+		"res://scenes/artifacts/holy_hand_grenade.tscn",
+		"res://scenes/characters/iron_giant_companion.tscn"
 	]
 	
 	var all_passed = true

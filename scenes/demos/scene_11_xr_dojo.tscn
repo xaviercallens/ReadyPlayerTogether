@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://demo_11_xr_dojo"]
+
+[ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/demos/demo_return.gd" id="2_return_script"]
+
+[sub_resource type="Environment" id="Environment_dojo"]
+background_mode = 1
+background_color = Color(0.05, 0.05, 0.1, 1)
+glow_enabled = true
+glow_intensity = 2.0
+glow_bloom = 0.5
+glow_blend_mode = 0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.008
+volumetric_fog_albedo = Color(0.8, 0.2, 1.0, 1)
+ssr_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="Mat_DojoFloor"]
+albedo_color = Color(0.12, 0.1, 0.18, 1)
+metallic = 0.8
+roughness = 0.2
+
+[sub_resource type="PlaneMesh" id="Plane_Dojo"]
+material = SubResource("Mat_DojoFloor")
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Target"]
+albedo_color = Color(1.0, 0.2, 0.4, 1)
+emission_enabled = true
+emission = Color(1.0, 0.2, 0.4, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="CylinderMesh" id="Mesh_Target"]
+material = SubResource("Mat_Target")
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.2
+
+[node name="GodotXRDojoArena" type="Node3D"]
+script = ExtResource("2_return_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_dojo")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 10, 0)
+light_color = Color(0.9, 0.4, 1.0, 1)
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("Plane_Dojo")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0, -8)
+billboard = 1
+pixel_size = 0.02
+text = "GODOT XR DOJO - COMBAT TRAINING ARENA
+[Target Practice & VR Physics Playground]
+Press H or Gamepad Start to Return to HUB"
+font_size = 54
+outline_size = 12
+
+[node name="Target1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -4, 2, -6)
+mesh = SubResource("Mesh_Target")
+
+[node name="Target2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 4, 2, -6)
+mesh = SubResource("Mesh_Target")
+
+[node name="PCPlayer" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)

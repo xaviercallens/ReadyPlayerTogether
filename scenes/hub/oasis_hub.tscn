@@ -5,47 +5,50 @@
 [ext_resource type="PackedScene" uid="uid://parzival_npc_scene" path="res://scenes/characters/parzival_npc.tscn" id="3_parzival"]
 [ext_resource type="PackedScene" uid="uid://art3mis_npc_scene" path="res://scenes/characters/art3mis_npc.tscn" id="4_art3mis"]
 [ext_resource type="PackedScene" uid="uid://aech_npc_scene" path="res://scenes/characters/aech_npc.tscn" id="5_aech"]
+[ext_resource type="PackedScene" uid="uid://zemeckis_cube_scene" path="res://scenes/artifacts/zemeckis_cube.tscn" id="6_zemeckis"]
+[ext_resource type="PackedScene" uid="uid://holy_hand_grenade_scene" path="res://scenes/artifacts/holy_hand_grenade.tscn" id="7_grenade"]
+[ext_resource type="PackedScene" uid="uid://iron_giant_companion_scene" path="res://scenes/characters/iron_giant_companion.tscn" id="8_giant"]
 
 [sub_resource type="Environment" id="Environment_cyberpunk"]
 background_mode = 1
-background_color = Color(0.02, 0.01, 0.05, 1)
+background_color = Color(0.04, 0.03, 0.08, 1)
 glow_enabled = true
-glow_intensity = 2.5
-glow_bloom = 0.6
+glow_intensity = 1.8
+glow_bloom = 0.3
 glow_blend_mode = 0
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.015
-volumetric_fog_albedo = Color(0.0, 0.7, 1.0, 1)
+volumetric_fog_density = 0.006
+volumetric_fog_albedo = Color(0.1, 0.6, 0.9, 1)
 ssr_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="Mat_Floor"]
-albedo_color = Color(0.05, 0.05, 0.08, 1)
-metallic = 0.85
-roughness = 0.15
+albedo_color = Color(0.08, 0.08, 0.12, 1)
+metallic = 0.7
+roughness = 0.25
 
 [sub_resource type="CylinderMesh" id="Mesh_Floor"]
 material = SubResource("Mat_Floor")
-top_radius = 20.0
-bottom_radius = 20.0
-height = 0.5
+top_radius = 18.0
+bottom_radius = 18.0
+height = 0.4
 
 [sub_resource type="StandardMaterial3D" id="Mat_Portal"]
-albedo_color = Color(0.0, 1.0, 0.8, 1)
+albedo_color = Color(0.0, 0.9, 0.8, 1)
 emission_enabled = true
-emission = Color(0.0, 1.0, 0.8, 1)
-emission_energy_multiplier = 4.0
+emission = Color(0.0, 0.9, 0.8, 1)
+emission_energy_multiplier = 3.0
 
 [sub_resource type="TorusMesh" id="Mesh_Portal"]
 material = SubResource("Mat_Portal")
-inner_radius = 1.8
-outer_radius = 2.2
+inner_radius = 1.6
+outer_radius = 2.0
 
 [sub_resource type="CylinderShape3D" id="Shape_Portal"]
 height = 3.0
 radius = 2.0
 
 [sub_resource type="BoxShape3D" id="Shape_Floor"]
-size = Vector3(40, 0.5, 40)
+size = Vector3(36, 0.4, 36)
 
 [node name="OasisHub" type="Node3D"]
 script = ExtResource("1_hub_script")
@@ -55,8 +58,8 @@ environment = SubResource("Environment_cyberpunk")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 15, 0)
-light_color = Color(0.4, 0.8, 1.0, 1)
-light_energy = 1.5
+light_color = Color(0.6, 0.85, 1.0, 1)
+light_energy = 1.2
 shadow_enabled = true
 
 [node name="CentralPlatform" type="StaticBody3D" parent="."]
@@ -68,30 +71,39 @@ mesh = SubResource("Mesh_Floor")
 shape = SubResource("Shape_Floor")
 
 [node name="PCPlayer" parent="." instance=ExtResource("2_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
 [node name="ParzivalNPC" parent="." instance=ExtResource("3_parzival")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.2, -4)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 4.0, 0.2, -4.5)
 
 [node name="Art3misNPC" parent="." instance=ExtResource("4_art3mis")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.2, -4)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -4.0, 0.2, -4.5)
 
 [node name="AechNPC" parent="." instance=ExtResource("5_aech")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.2, -4)
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.0, 0.2, -7.5)
+
+[node name="ZemeckisCube" parent="." instance=ExtResource("6_zemeckis")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 0.2, -2.5)
+
+[node name="HolyHandGrenade" parent="." instance=ExtResource("7_grenade")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 0.2, -2.5)
+
+[node name="IronGiantCompanion" parent="." instance=ExtResource("8_giant")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0, 0.0, -10.0)
 
 [node name="HubTitle" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, -9)
 billboard = 1
-pixel_size = 0.02
+pixel_size = 0.018
 text = "WELCOME TO THE OASIS
 [Keys 1-9, 0] Teleport Instantly | [Gamepad / Mouse] Look"
-font_size = 64
-outline_size = 16
+font_size = 56
+outline_size = 12
 
 [node name="Portals" type="Node3D" parent="."]
 
 [node name="Portal_01" type="Area3D" parent="Portals"]
-transform = Transform3D(0.0000, 0, 1.0000, 0, 1, 0, -1.0000, 0, 0.0000, 14.00, 2.0, 0.00)
+transform = Transform3D(0.0000, 0, 1.0000, 0, 1, 0, -1.0000, 0, 0.0000, 13.00, 1.8, 0.00)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_01"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -101,15 +113,15 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_01"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "01: The Stacks [Press 1]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "01: The Stacks [1]"
+font_size = 42
+outline_size = 8
 
 [node name="Portal_02" type="Area3D" parent="Portals"]
-transform = Transform3D(0.5878, 0, 0.8090, 0, 1, 0, -0.8090, 0, 0.5878, 11.33, 2.0, 8.23)
+transform = Transform3D(0.5878, 0, 0.8090, 0, 1, 0, -0.8090, 0, 0.5878, 10.52, 1.8, 7.64)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_02"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -119,15 +131,15 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_02"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "02: Halliday's Journal [Press 2]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "02: Halliday's Journal [2]"
+font_size = 42
+outline_size = 8
 
 [node name="Portal_03" type="Area3D" parent="Portals"]
-transform = Transform3D(0.9511, 0, 0.3090, 0, 1, 0, -0.3090, 0, 0.9511, 4.33, 2.0, 13.31)
+transform = Transform3D(0.9511, 0, 0.3090, 0, 1, 0, -0.3090, 0, 0.9511, 4.02, 1.8, 12.36)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_03"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -137,15 +149,15 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_03"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "03: Copper Race [Press 3]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "03: Copper Race [3]"
+font_size = 42
+outline_size = 8
 
 [node name="Portal_04" type="Area3D" parent="Portals"]
-transform = Transform3D(0.9511, 0, -0.3090, 0, 1, 0, 0.3090, 0, 0.9511, -4.33, 2.0, 13.31)
+transform = Transform3D(0.9511, 0, -0.3090, 0, 1, 0, 0.3090, 0, 0.9511, -4.02, 1.8, 12.36)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_04"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -155,15 +167,15 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_04"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "04: Distracted Globe [Press 4]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "04: Distracted Globe [4]"
+font_size = 42
+outline_size = 8
 
 [node name="Portal_05" type="Area3D" parent="Portals"]
-transform = Transform3D(0.5878, 0, -0.8090, 0, 1, 0, 0.8090, 0, 0.5878, -11.33, 2.0, 8.23)
+transform = Transform3D(0.5878, 0, -0.8090, 0, 1, 0, 0.8090, 0, 0.5878, -10.52, 1.8, 7.64)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_05"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -173,15 +185,15 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_05"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "05: Retro Arcade [Press 5]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "05: Retro Arcade [5]"
+font_size = 42
+outline_size = 8
 
 [node name="Portal_06" type="Area3D" parent="Portals"]
-transform = Transform3D(0.0000, 0, -1.0000, 0, 1, 0, 1.0000, 0, 0.0000, -14.00, 2.0, 0.00)
+transform = Transform3D(0.0000, 0, -1.0000, 0, 1, 0, 1.0000, 0, 0.0000, -13.00, 1.8, 0.00)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_06"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -191,15 +203,15 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_06"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "06: Planet Doom [Press 6]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "06: Planet Doom [6]"
+font_size = 42
+outline_size = 8
 
 [node name="Portal_07" type="Area3D" parent="Portals"]
-transform = Transform3D(-0.5878, 0, -0.8090, 0, 1, 0, 0.8090, 0, -0.5878, -11.33, 2.0, -8.23)
+transform = Transform3D(-0.5878, 0, -0.8090, 0, 1, 0, 0.8090, 0, -0.5878, -10.52, 1.8, -7.64)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_07"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -209,15 +221,15 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_07"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "07: Overlook Hotel [Press 7]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "07: Overlook Hotel [7]"
+font_size = 42
+outline_size = 8
 
 [node name="Portal_08" type="Area3D" parent="Portals"]
-transform = Transform3D(-0.9511, 0, -0.3090, 0, 1, 0, 0.3090, 0, -0.9511, -4.33, 2.0, -13.31)
+transform = Transform3D(-0.9511, 0, -0.3090, 0, 1, 0, 0.3090, 0, -0.9511, -4.02, 1.8, -12.36)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_08"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -227,15 +239,15 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_08"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "08: IOI Citadel [Press 8]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "08: IOI Citadel [8]"
+font_size = 42
+outline_size = 8
 
 [node name="Portal_09" type="Area3D" parent="Portals"]
-transform = Transform3D(-0.9511, 0, 0.3090, 0, 1, 0, -0.3090, 0, -0.9511, 4.33, 2.0, -13.31)
+transform = Transform3D(-0.9511, 0, 0.3090, 0, 1, 0, -0.3090, 0, -0.9511, 4.02, 1.8, -12.36)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_09"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -245,15 +257,15 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_09"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "09: Crystal Castle [Press 9]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "09: Crystal Castle [9]"
+font_size = 42
+outline_size = 8
 
 [node name="Portal_10" type="Area3D" parent="Portals"]
-transform = Transform3D(-0.5878, 0, 0.8090, 0, 1, 0, -0.8090, 0, -0.5878, 11.33, 2.0, -8.23)
+transform = Transform3D(-0.5878, 0, 0.8090, 0, 1, 0, -0.8090, 0, -0.5878, 10.52, 1.8, -7.64)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_10"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -263,9 +275,9 @@ mesh = SubResource("Mesh_Portal")
 shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_10"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 billboard = 1
-pixel_size = 0.015
-text = "10: Easter Egg [Press 0]"
-font_size = 48
-outline_size = 10
+pixel_size = 0.014
+text = "10: Easter Egg [0]"
+font_size = 42
+outline_size = 8
