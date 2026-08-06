@@ -1,3 +1,17 @@
+import os
+
+BASE_DIR = r"D:\xdev\Oasis"
+
+def write_file(filepath, content):
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content.strip())
+
+# ==============================================================================
+# 1. THIRD-PERSON CAMERA IN PC_PLAYER (scenes/player_vr/pc_player.tscn)
+# Positioned behind & above the player: (0, 2.8, 3.8) tilted down 15 deg.
+# ==============================================================================
+PC_PLAYER_TSCN = """
 [gd_scene load_steps=11 format=3 uid="uid://pc_player_scene"]
 
 [ext_resource type="Script" path="res://scripts/player_vr/pc_player.gd" id="1_pc_script"]
@@ -74,3 +88,25 @@ near = 0.05
 [node name="SceneNavigator" parent="." instance=ExtResource("2_navigator")]
 
 [node name="CommandMenu" parent="." instance=ExtResource("3_command_menu")]
+"""
+
+write_file(os.path.join(BASE_DIR, "scenes/player_vr/pc_player.tscn"), PC_PLAYER_TSCN)
+
+# ==============================================================================
+# 2. UPDATE LAUNCHERS FOR DESKTOP MODE NO VR (Launch_Oasis.bat & Launch_Oasis.ps1)
+# ==============================================================================
+BAT_CONTENT = """@echo off
+echo Starting Projet OASIS (Desktop Mode - No VR)...
+"C:\\Users\\Utilisateur\\AppData\\Local\\Microsoft\\WinGet\\Packages\\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\\Godot_v4.7.1-stable_win64.exe" --path "D:\\xdev\\Oasis"
+"""
+
+PS1_CONTENT = """Write-Host "=========================================" -ForegroundColor Cyan
+Write-Host " Launching Projet OASIS (Desktop Mode)..." -ForegroundColor Cyan
+Write-Host "=========================================" -ForegroundColor Cyan
+& "C:\\Users\\Utilisateur\\AppData\\Local\\Microsoft\\WinGet\\Packages\\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\\Godot_v4.7.1-stable_win64.exe" --path "D:\\xdev\\Oasis"
+"""
+
+write_file(os.path.join(BASE_DIR, "Launch_Oasis.bat"), BAT_CONTENT)
+write_file(os.path.join(BASE_DIR, "Launch_Oasis.ps1"), PS1_CONTENT)
+
+print("Camera third-person view & desktop launcher scripts updated successfully!")

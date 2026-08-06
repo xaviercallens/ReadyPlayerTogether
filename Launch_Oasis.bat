@@ -1,5 +1,3 @@
 @echo off
-echo =========================================
-echo Launching Projet OASIS VR in Godot 4...
-echo =========================================
-powershell -ExecutionPolicy Bypass -File "D:\xdev\Oasis\Launch_Oasis.ps1"
+echo Starting Projet OASIS (Desktop Mode - No VR)...
+"C:\Users\Utilisateur\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.1-stable_win64.exe" --path "D:\xdev\Oasis"
