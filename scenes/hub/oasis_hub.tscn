@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/hub/oasis_hub.gd" id="1_hub_script"]
 [ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://parzival_npc_scene" path="res://scenes/characters/parzival_npc.tscn" id="3_parzival"]
 
 [sub_resource type="Environment" id="Environment_cyberpunk"]
 background_mode = 1
@@ -66,6 +67,9 @@ shape = SubResource("Shape_Floor")
 
 [node name="PCPlayer" parent="." instance=ExtResource("2_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="ParzivalNPC" parent="." instance=ExtResource("3_parzival")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.2, -4)
 
 [node name="HubTitle" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -10)
