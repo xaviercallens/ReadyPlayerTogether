@@ -13,9 +13,13 @@ func _ready() -> void:
 
 func _get_target_mesh() -> MeshInstance3D:
 	if has_node("Body"):
-		return get_node("Body") as MeshInstance3D
+		var b = get_node("Body")
+		if b is MeshInstance3D:
+			return b as MeshInstance3D
 	elif has_node("CarMesh/Body"):
-		return get_node("CarMesh/Body") as MeshInstance3D
+		var cb = get_node("CarMesh/Body")
+		if cb is MeshInstance3D:
+			return cb as MeshInstance3D
 	
 	var meshes = find_children("*", "MeshInstance3D", true, false)
 	if meshes.size() > 0:
@@ -38,8 +42,7 @@ func play_construction_effect() -> void:
 
 func _process(delta: float) -> void:
 	time_passed += delta
-	if has_node("Driver/VisemeLabel"):
-		var driver_label = get_node("Driver/VisemeLabel") as Label3D
-		if driver_label != null:
-			var visemes = ["Aah", "Ohh", "Eee", "Mmm", "First key is earned!"]
-			driver_label.text = "PARZIVAL: " + visemes[int(time_passed * 3.0) % visemes.size()]
+	var driver_label = get_node_or_null("Driver/VisemeLabel") as Label3D
+	if driver_label != null:
+		var visemes = ["Aah", "Ohh", "Eee", "Mmm", "First key is earned!"]
+		driver_label.text = "PARZIVAL: " + visemes[int(time_passed * 3.0) % visemes.size()]

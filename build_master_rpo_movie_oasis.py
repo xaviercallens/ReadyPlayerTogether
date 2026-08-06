@@ -72,7 +72,7 @@ outer_radius = 44.5
 [node name="OasisMasterRPOMovieHub" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_Env_RPO")
+environment = SubResource("Env_RPO")
 
 [node name="SunLight" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 25, 0)
