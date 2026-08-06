@@ -29,7 +29,8 @@ func _init():
 		"res://scenes/demos/scene_11_xr_dojo.tscn",
 		"res://scenes/artifacts/zemeckis_cube.tscn",
 		"res://scenes/artifacts/holy_hand_grenade.tscn",
-		"res://scenes/characters/iron_giant_companion.tscn"
+		"res://scenes/characters/iron_giant_companion.tscn",
+		"res://scenes/demos/scene_12_library_showroom.tscn"
 	]
 	
 	var all_passed = true
