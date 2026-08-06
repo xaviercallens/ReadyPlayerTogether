@@ -1,3 +1,16 @@
+import os
+
+BASE_DIR = r"D:\xdev\Oasis"
+
+def write_file(filepath, content):
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content.strip())
+
+# ==============================================================================
+# SAFE DELOREAN SCRIPT WITH DYNAMIC MESH SEARCH & NULL CHECKS
+# ==============================================================================
+FIXED_DELOREAN_GD = """
 extends Node3D
 
 # ==============================================================================
@@ -45,3 +58,8 @@ func _process(delta: float) -> void:
 		if driver_label != null:
 			var visemes = ["Aah", "Ohh", "Eee", "Mmm", "First key is earned!"]
 			driver_label.text = "PARZIVAL: " + visemes[int(time_passed * 3.0) % visemes.size()]
+"""
+
+write_file(os.path.join(BASE_DIR, "scripts/vehicles/delorean_car.gd"), FIXED_DELOREAN_GD)
+
+print("DeLorean null-pointer fix applied successfully!")
