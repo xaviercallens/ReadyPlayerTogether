@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=3 uid="uid://ai_prompt_tool_ui"]
+
+[ext_resource type="Script" path="res://scripts/ui/ai_prompt_tool.gd" id="1_script"]
+
+[node name="AIPromptTool" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_script")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -140.0
+offset_right = 280.0
+offset_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Control/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0, 0.9, 1.0, 1)
+theme_override_font_sizes/font_size = 20
+text = "🎨 OASIS IN-GAME AI ASSET GENERATOR (Ctrl + A)"
+horizontal_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Control/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Type any 3D asset (e.g. cyberpunk hoverboard, laser sword)..."
+
+[node name="ButtonSubmit" type="Button" parent="Control/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "🚀 GENERATE 3D MODEL ON RTX 2070 ML FOUNDRY"
+
+[node name="StatusLabel" type="Label" parent="Control/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Model will be generated in background and spawned in 3D scene!"
+horizontal_alignment = 1

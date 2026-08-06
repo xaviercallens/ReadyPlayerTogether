@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://pc_player_scene"]
+[gd_scene load_steps=12 format=3 uid="uid://pc_player_scene"]
 
 [ext_resource type="Script" path="res://scripts/player_vr/pc_player.gd" id="1_pc_script"]
 [ext_resource type="PackedScene" uid="uid://scene_navigator_ui" path="res://scenes/ui/scene_navigator.tscn" id="2_navigator"]
 [ext_resource type="PackedScene" uid="uid://command_menu_ui" path="res://scenes/ui/command_menu.tscn" id="3_command_menu"]
+[ext_resource type="PackedScene" uid="uid://ai_prompt_tool_ui" path="res://scenes/ui/ai_prompt_tool.tscn" id="4_prompt_tool"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 
@@ -74,3 +75,5 @@ near = 0.05
 [node name="SceneNavigator" parent="." instance=ExtResource("2_navigator")]
 
 [node name="CommandMenu" parent="." instance=ExtResource("3_command_menu")]
+
+[node name="AIPromptTool" parent="." instance=ExtResource("4_prompt_tool")]

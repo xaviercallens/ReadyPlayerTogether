@@ -33,11 +33,13 @@ func _init():
 		"res://scenes/artifacts/holy_hand_grenade.tscn",
 		"res://scenes/characters/iron_giant_companion.tscn",
 		"res://scenes/demos/scene_12_library_showroom.tscn",
+		"res://scenes/demos/scene_13_procedural_scatter_city.tscn",
 		"res://scenes/ui/scene_navigator.tscn",
 		"res://scenes/vehicles/delorean_car.tscn",
 		"res://scenes/characters/rpo_mannequin_male.tscn",
 		"res://scenes/ui/command_menu.tscn",
-		"res://scenes/ui/virtual_portal_screen.tscn"
+		"res://scenes/ui/virtual_portal_screen.tscn",
+		"res://scenes/ui/ai_prompt_tool.tscn"
 	]
 	
 	var all_passed = true
