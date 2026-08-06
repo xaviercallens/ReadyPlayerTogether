@@ -1,8 +1,46 @@
-[gd_scene load_steps=3 format=3 uid="uid://pc_player_scene"]
+[gd_scene load_steps=11 format=3 uid="uid://pc_player_scene"]
 
 [ext_resource type="Script" path="res://scripts/player_vr/pc_player.gd" id="1_pc_script"]
+[ext_resource type="PackedScene" uid="uid://scene_navigator_ui" path="res://scenes/ui/scene_navigator.tscn" id="2_navigator"]
+[ext_resource type="PackedScene" uid="uid://command_menu_ui" path="res://scenes/ui/command_menu.tscn" id="3_command_menu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_MannequinBody"]
+albedo_color = Color(0.88, 0.9, 0.95, 1)
+metallic = 0.8
+roughness = 0.15
+emission_enabled = true
+emission = Color(0.0, 0.6, 0.9, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_Visor"]
+albedo_color = Color(0.0, 0.9, 1.0, 1)
+metallic = 0.9
+roughness = 0.1
+emission_enabled = true
+emission = Color(0.0, 0.9, 1.0, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="CapsuleMesh" id="Mesh_Torso"]
+material = SubResource("Mat_MannequinBody")
+radius = 0.35
+height = 1.05
+
+[sub_resource type="SphereMesh" id="Mesh_Head"]
+material = SubResource("Mat_MannequinBody")
+radius = 0.22
+height = 0.44
+
+[sub_resource type="BoxMesh" id="Mesh_Visor"]
+material = SubResource("Mat_Visor")
+size = Vector3(0.3, 0.08, 0.12)
+
+[sub_resource type="CylinderMesh" id="Mesh_Limb"]
+material = SubResource("Mat_MannequinBody")
+top_radius = 0.09
+bottom_radius = 0.07
+height = 0.85
 
 [node name="PCPlayer" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_pc_script")
@@ -11,6 +49,33 @@ script = ExtResource("1_pc_script")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_player")
 
+[node name="MannequinMesh" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Torso" type="MeshInstance3D" parent="MannequinMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+mesh = SubResource("Mesh_Torso")
+
+[node name="Head" type="MeshInstance3D" parent="MannequinMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
+mesh = SubResource("Mesh_Head")
+
+[node name="Visor" type="MeshInstance3D" parent="MannequinMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.18)
+mesh = SubResource("Mesh_Visor")
+
+[node name="LeftLeg" type="MeshInstance3D" parent="MannequinMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.42, 0)
+mesh = SubResource("Mesh_Limb")
+
+[node name="RightLeg" type="MeshInstance3D" parent="MannequinMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.42, 0)
+mesh = SubResource("Mesh_Limb")
+
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 current = true
+
+[node name="SceneNavigator" parent="." instance=ExtResource("2_navigator")]
+
+[node name="CommandMenu" parent="." instance=ExtResource("3_command_menu")]
