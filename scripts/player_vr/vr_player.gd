@@ -40,6 +40,25 @@ func _handle_vr_movement(delta: float) -> void:
 		forward = forward.normalized()
 		right = right.normalized()
 		
-		# Move the XROrigin3D base
+	# Move the XROrigin3D base
 		var move_dir = (forward * -joystick_vector.y) + (right * joystick_vector.x)
 		global_position += move_dir * move_speed * delta
+	else:
+		# PC KEYBOARD FALLBACK (For testing before Meta Quest 3S arrives)
+		var keyboard_input = Vector2.ZERO
+		if Input.is_action_pressed("move_forward"): keyboard_input.y -= 1
+		if Input.is_action_pressed("move_backward"): keyboard_input.y += 1
+		if Input.is_action_pressed("move_left"): keyboard_input.x -= 1
+		if Input.is_action_pressed("move_right"): keyboard_input.x += 1
+		
+		if keyboard_input.length() > 0:
+			keyboard_input = keyboard_input.normalized()
+			var forward = -camera.global_transform.basis.z
+			var right = camera.global_transform.basis.x
+			forward.y = 0.0
+			right.y = 0.0
+			forward = forward.normalized()
+			right = right.normalized()
+			
+			var move_dir = (forward * keyboard_input.y) + (right * keyboard_input.x)
+			global_position += move_dir * move_speed * delta
