@@ -42,7 +42,8 @@ func _init():
 		"res://scenes/ui/ai_prompt_tool.tscn",
 		"res://scenes/artifacts/hoverboard.tscn",
 		"res://scenes/artifacts/orb_osuvox.tscn",
-		"res://scenes/characters/gundam_mech.tscn"
+		"res://scenes/characters/gundam_mech.tscn",
+		"res://scenes/ui/vr_inventory_system.tscn"
 	]
 	
 	var all_passed = true
