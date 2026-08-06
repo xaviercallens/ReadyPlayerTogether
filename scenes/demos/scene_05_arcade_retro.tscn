@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://demo_05_arcade_retro"]
+
+[ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="1_player"]
+
+[subresource type="Environment" id="Environment_05_arcade_retro"]
+background_mode = 1
+background_color = Color(0.1, 0.1, 0.1, 1)
+glow_enabled = true
+glow_intensity = 2.0
+glow_bloom = 0.5
+glow_blend_mode = 0
+volumetric_fog_enabled = false
+volumetric_fog_density = 0.02
+volumetric_fog_albedo = Color(0.0, 1.0, 0.0, 1)
+
+[subresource type="StandardMaterial3D" id="Mat_05_arcade_retro"]
+albedo_color = Color(0.1, 0.1, 0.1, 1)
+roughness = 0.2
+
+[subresource type="PlaneMesh" id="Plane_05_arcade_retro"]
+material = SubResource("Mat_05_arcade_retro")
+size = Vector2(50, 50)
+
+[node name="GaragedeAech" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_05_arcade_retro")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 10, 0)
+light_color = Color(0.0, 1.0, 0.0, 1)
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("Plane_05_arcade_retro")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -5)
+pixel_size = 0.02
+text = "DEMO: Garage de Aech"
+font_size = 64
+outline_size = 12
+
+[node name="PCPlayer" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
