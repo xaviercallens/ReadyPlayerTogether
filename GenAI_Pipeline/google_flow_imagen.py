@@ -5,10 +5,18 @@ Uses session credentials to generate custom Ready Player Me avatar textures,
 """
 
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class GoogleFlowAssetPipeline:
-    def __init__(self, api_key: str = None):
-        self.api_key = api_key or os.getenv("GEMINI_API_KEY")
+    def __init__(self, session_token: str = None):
+        self.session_token = session_token or os.getenv("GOOGLE_FLOW_SESSION_TOKEN")
+        
+        if not self.session_token:
+            print("[OASIS GenAI] Warning: GOOGLE_FLOW_SESSION_TOKEN is not set in environment variables.")
+            
         print("[OASIS GenAI] Initialized Google Flow / Imagen Pipeline.")
 
     def generate_avatar_texture(self, prompt: str, output_path: str = "avatar_skin.png"):

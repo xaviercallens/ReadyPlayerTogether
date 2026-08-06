@@ -6,11 +6,20 @@ NPC conversations, and quest events for ReadyPlayerTogether VR experience.
 
 import os
 import json
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class GeminiQuestEngine:
-    def __init__(self, project_id: str = None, location: str = "us-central1"):
+    def __init__(self, project_id: str = None, location: str = None):
         self.project_id = project_id or os.getenv("GCP_PROJECT_ID", "oasis-ready-player-together")
-        self.location = location
+        self.location = location or os.getenv("GCP_REGION", "us-central1")
+        self.api_key = os.getenv("GEMINI_API_KEY")
+        
+        if not self.api_key:
+            print("[OASIS AI] Warning: GEMINI_API_KEY is not set in environment variables.")
+            
         print(f"[OASIS AI] Initialized Gemini Ultra Quest Engine for project: {self.project_id}")
 
     def generate_npc_dialogue(self, player_action: str, current_key: str) -> dict:
