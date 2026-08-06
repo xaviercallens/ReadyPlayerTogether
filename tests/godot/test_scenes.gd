@@ -39,7 +39,10 @@ func _init():
 		"res://scenes/characters/rpo_mannequin_male.tscn",
 		"res://scenes/ui/command_menu.tscn",
 		"res://scenes/ui/virtual_portal_screen.tscn",
-		"res://scenes/ui/ai_prompt_tool.tscn"
+		"res://scenes/ui/ai_prompt_tool.tscn",
+		"res://scenes/artifacts/hoverboard.tscn",
+		"res://scenes/artifacts/orb_osuvox.tscn",
+		"res://scenes/characters/gundam_mech.tscn"
 	]
 	
 	var all_passed = true

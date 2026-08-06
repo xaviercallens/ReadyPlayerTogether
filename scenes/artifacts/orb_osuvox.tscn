@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://orb_osuvox_artifact_scene"]
+
+[ext_resource type="Script" path="res://scripts/artifacts/orb_osuvox.gd" id="1_script"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_OrbCore"]
+albedo_color = Color(0.9, 0.1, 0.2, 1)
+metallic = 0.9
+emission_enabled = true
+emission = Color(0.9, 0.1, 0.2, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="SphereMesh" id="Mesh_Core"]
+material = SubResource("Mat_OrbCore")
+radius = 0.25
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_Forcefield"]
+transparency = 1
+albedo_color = Color(0.9, 0.2, 0.4, 0.4)
+metallic = 0.8
+roughness = 0.1
+
+[sub_resource type="SphereMesh" id="Mesh_Shield"]
+material = SubResource("Mat_Forcefield")
+radius = 0.45
+height = 0.9
+
+[sub_resource type="SphereShape3D" id="Shape_Interact"]
+radius = 1.5
+
+[node name="OrbOfOsuvox" type="Area3D"]
+script = ExtResource("1_script")
+
+[node name="CoreMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh_Core")
+
+[node name="ShieldMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh_Shield")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+billboard = 1
+pixel_size = 0.012
+text = "ARTIFACT: Orb of Osuvox Forcefield"
+font_size = 32
+outline_size = 6
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape_Interact")
