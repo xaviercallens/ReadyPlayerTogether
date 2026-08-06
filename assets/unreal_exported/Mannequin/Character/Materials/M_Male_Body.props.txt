@@ -1,0 +1,146 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[7] =
+{
+    ReferencedTextures[0] = Texture2D'Mannequin/Character/Materials/MaterialLayers/T_ML_Aluminum01.T_ML_Aluminum01'
+    ReferencedTextures[1] = Texture2D'Mannequin/Character/Materials/MaterialLayers/T_ML_Aluminum01_N.T_ML_Aluminum01_N'
+    ReferencedTextures[2] = Texture2D'Mannequin/Character/Materials/MaterialLayers/T_ML_Rubber_Blue_01_D.T_ML_Rubber_Blue_01_D'
+    ReferencedTextures[3] = Texture2D'Mannequin/Character/Materials/MaterialLayers/T_ML_Rubber_Blue_01_N.T_ML_Rubber_Blue_01_N'
+    ReferencedTextures[4] = Texture2D'Mannequin/Character/Textures/T_Male_Mask.T_Male_Mask'
+    ReferencedTextures[5] = Texture2D'Mannequin/Character/Textures/T_Male_N.T_Male_N'
+    ReferencedTextures[6] = Texture2D'Mannequin/Character/Textures/T_UE4Logo_Mask.T_UE4Logo_Mask'
+}
+Expressions[12] =
+{
+    Expressions[7] = MaterialExpressionVectorParameter'Mannequin/Character/Materials/M_Male_Body.MaterialExpressionVectorParameter_3'
+    Expressions[8] = MaterialExpressionTextureSampleParameter2D'Mannequin/Character/Materials/M_Male_Body.MaterialExpressionTextureSampleParameter2D_0'
+    Expressions[9] = MaterialExpressionStaticSwitchParameter'Mannequin/Character/Materials/M_Male_Body.MaterialExpressionStaticSwitchParameter_0'
+    Expressions[11] = MaterialExpressionTextureSampleParameter2D'Mannequin/Character/Materials/M_Male_Body.MaterialExpressionTextureSampleParameter2D_1'
+}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] = { ParameterInfos[0]={} }
+            Entries[1] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=BodyColor }
+                }
+            }
+            Entries[2] =
+            {
+                ParameterInfos[2] =
+                {
+                    ParameterInfos[0] = { Name=Mask }
+                    ParameterInfos[1] = { Name=NormalMap }
+                }
+            }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[0] = {}
+        VectorValues[1] =
+        {
+            VectorValues[0] = { R=0.45098, G=0.403922, B=0.360784, A=0 }
+        }
+        TextureValues[2] =
+        {
+            TextureValues[0] = Texture2D'Mannequin/Character/Textures/T_Male_Mask.T_Male_Mask'
+            TextureValues[1] = Texture2D'Mannequin/Character/Textures/T_Male_N.T_Male_N'
+        }
+    }
+    ReferencedTextures[7] =
+    {
+        ReferencedTextures[0] = Texture2D'Mannequin/Character/Materials/MaterialLayers/T_ML_Rubber_Blue_01_D.T_ML_Rubber_Blue_01_D'
+        ReferencedTextures[1] = Texture2D'Mannequin/Character/Materials/MaterialLayers/T_ML_Rubber_Blue_01_N.T_ML_Rubber_Blue_01_N'
+        ReferencedTextures[2] = Texture2D'Mannequin/Character/Materials/MaterialLayers/T_ML_Aluminum01.T_ML_Aluminum01'
+        ReferencedTextures[3] = Texture2D'Mannequin/Character/Materials/MaterialLayers/T_ML_Aluminum01_N.T_ML_Aluminum01_N'
+        ReferencedTextures[4] = Texture2D'Mannequin/Character/Textures/T_Male_N.T_Male_N'
+        ReferencedTextures[5] = Texture2D'Mannequin/Character/Textures/T_UE4Logo_Mask.T_UE4Logo_Mask'
+        ReferencedTextures[6] = Texture2D'Mannequin/Character/Textures/T_Male_Mask.T_Male_Mask'
+    }
+}
+BlendMode = BLEND_Masked (1)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[4] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'Mannequin/Character/Textures/T_Male_N.T_Male_N'
+        Name = NormalMap
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'Mannequin/Character/Textures/T_Male_Mask.T_Male_Mask'
+        Name = Mask
+        Group = None
+    }
+    CollectedTextureParameters[2] =
+    {
+        Texture = Texture2D'Mannequin/Character/Textures/T_Male_Mask.T_Male_Mask'
+        Name = Mask
+        Group = None
+    }
+    CollectedTextureParameters[3] =
+    {
+        Texture = Texture2D'Mannequin/Character/Textures/T_Male_N.T_Male_N'
+        Name = NormalMap
+        Group = None
+    }
+}
+CollectedScalarParameters[0] = {}
+CollectedVectorParameters[2] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=0.45098, G=0.403922, B=0.360784, A=0 }
+        Name = BodyColor
+        Group = None
+    }
+    CollectedVectorParameters[1] =
+    {
+        Value = { R=0.45098, G=0.403922, B=0.360784, A=0 }
+        Name = BodyColor
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[4] =
+{
+    TextureStreamingData[0] =
+    {
+        SamplingScale = 8
+        UVChannelIndex = 0
+        TextureName = T_ML_Aluminum01
+    }
+    TextureStreamingData[1] =
+    {
+        SamplingScale = 50
+        UVChannelIndex = 0
+        TextureName = T_ML_Rubber_Blue_01_D
+    }
+    TextureStreamingData[2] =
+    {
+        SamplingScale = 1
+        UVChannelIndex = 0
+        TextureName = UE4_Mannequin__normals
+    }
+    TextureStreamingData[3] =
+    {
+        SamplingScale = 1
+        UVChannelIndex = 0
+        TextureName = UE4_Mannequin_MAT_MASKA
+    }
+}
