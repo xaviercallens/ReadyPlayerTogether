@@ -30,7 +30,8 @@ func _init():
 		"res://scenes/artifacts/zemeckis_cube.tscn",
 		"res://scenes/artifacts/holy_hand_grenade.tscn",
 		"res://scenes/characters/iron_giant_companion.tscn",
-		"res://scenes/demos/scene_12_library_showroom.tscn"
+		"res://scenes/demos/scene_12_library_showroom.tscn",
+		"res://scenes/ui/scene_navigator.tscn"
 	]
 	
 	var all_passed = true
