@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://pc_player_scene"]
 
-[ext_resource type="Script" path="res://scripts/player_vr/pc_player.gd" id="1_pc_script"]
+[ext_resource type="Script" path="res://scripts/player_vr/third_person_controller.gd" id="1_controller"]
 [ext_resource type="PackedScene" uid="uid://scene_navigator_ui" path="res://scenes/ui/scene_navigator.tscn" id="2_navigator"]
 [ext_resource type="PackedScene" uid="uid://command_menu_ui" path="res://scenes/ui/command_menu.tscn" id="3_command_menu"]
 [ext_resource type="PackedScene" uid="uid://ai_prompt_tool_ui" path="res://scenes/ui/ai_prompt_tool.tscn" id="4_prompt_tool"]
@@ -40,36 +40,39 @@ bottom_radius = 0.07
 height = 0.85
 
 [node name="PCPlayer" type="CharacterBody3D" groups=["player"]]
-script = ExtResource("1_pc_script")
+script = ExtResource("1_controller")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_player")
 
-[node name="MannequinMesh" type="Node3D" parent="."]
+[node name="MeshPivot" type="Node3D" parent="."]
 
-[node name="Torso" type="MeshInstance3D" parent="MannequinMesh"]
+[node name="Torso" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 mesh = SubResource("Mesh_Torso")
 
-[node name="Head" type="MeshInstance3D" parent="MannequinMesh"]
+[node name="Head" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
 mesh = SubResource("Mesh_Head")
 
-[node name="Visor" type="MeshInstance3D" parent="MannequinMesh"]
+[node name="Visor" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.18)
 mesh = SubResource("Mesh_Visor")
 
-[node name="LeftLeg" type="MeshInstance3D" parent="MannequinMesh"]
+[node name="LeftLeg" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.42, 0)
 mesh = SubResource("Mesh_Limb")
 
-[node name="RightLeg" type="MeshInstance3D" parent="MannequinMesh"]
+[node name="RightLeg" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.42, 0)
 mesh = SubResource("Mesh_Limb")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.9659, 0.2588, 0, -0.2588, 0.9659, 0, 2.8, 3.8)
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9659, 0.2588, 0, -0.2588, 0.9659, 0, 2.2, 0)
+spring_length = 3.5
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
 current = true
 near = 0.05
 
