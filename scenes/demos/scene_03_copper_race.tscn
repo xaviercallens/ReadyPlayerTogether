@@ -1,44 +1,49 @@
-[gd_scene load_steps=5 format=3 uid="uid://demo_03_copper_race"]
+[gd_scene load_steps=6 format=3 uid="uid://demo_03_copper_race"]
 
 [ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/demos/demo_return.gd" id="2_return_script"]
 
 [sub_resource type="Environment" id="Environment_03_copper_race"]
 background_mode = 1
-background_color = Color(0.1, 0.1, 0.3, 1)
+background_color = Color(0.05, 0.05, 0.25, 1)
 glow_enabled = true
-glow_intensity = 2.0
-glow_bloom = 0.5
+glow_intensity = 2.5
+glow_bloom = 0.6
 glow_blend_mode = 0
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.02
-volumetric_fog_albedo = Color(0.0, 1.0, 0.8, 1)
+volumetric_fog_albedo = Color(0.0, 1.0, 0.9, 1)
+ssr_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="Mat_03_copper_race"]
-albedo_color = Color(0.1, 0.1, 0.3, 1)
+albedo_color = Color(0.05, 0.05, 0.25, 1)
 roughness = 0.2
 
 [sub_resource type="PlaneMesh" id="Plane_03_copper_race"]
 material = SubResource("Mat_03_copper_race")
-size = Vector2(50, 50)
+size = Vector2(60, 60)
 
 [node name="CoursedeNewYork" type="Node3D"]
+script = ExtResource("2_return_script")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_03_copper_race")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 10, 0)
-light_color = Color(0.0, 1.0, 0.8, 1)
+light_color = Color(0.0, 1.0, 0.9, 1)
 shadow_enabled = true
 
 [node name="Floor" type="MeshInstance3D" parent="."]
 mesh = SubResource("Plane_03_copper_race")
 
 [node name="Label3D" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -6)
+billboard = 1
 pixel_size = 0.02
-text = "DEMO: Course de New York"
-font_size = 64
+text = "OASIS DEMO: Course de New York
+[Press H or Gamepad Start to Return to HUB]"
+font_size = 54
 outline_size = 12
 
 [node name="PCPlayer" parent="." instance=ExtResource("1_player")]

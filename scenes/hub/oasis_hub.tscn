@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://scripts/hub/oasis_hub.gd" id="1_hub_script"]
 [ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="2_player"]
 [ext_resource type="PackedScene" uid="uid://parzival_npc_scene" path="res://scenes/characters/parzival_npc.tscn" id="3_parzival"]
+[ext_resource type="PackedScene" uid="uid://art3mis_npc_scene" path="res://scenes/characters/art3mis_npc.tscn" id="4_art3mis"]
+[ext_resource type="PackedScene" uid="uid://aech_npc_scene" path="res://scenes/characters/aech_npc.tscn" id="5_aech"]
 
 [sub_resource type="Environment" id="Environment_cyberpunk"]
 background_mode = 1
@@ -71,16 +73,22 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 [node name="ParzivalNPC" parent="." instance=ExtResource("3_parzival")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.2, -4)
 
+[node name="Art3misNPC" parent="." instance=ExtResource("4_art3mis")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.2, -4)
+
+[node name="AechNPC" parent="." instance=ExtResource("5_aech")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.2, -4)
+
 [node name="HubTitle" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -10)
+billboard = 1
 pixel_size = 0.02
 text = "WELCOME TO THE OASIS
-Ready Player Together"
-font_size = 72
+[Keys 1-9, 0] Teleport Instantly | [Gamepad / Mouse] Look"
+font_size = 64
 outline_size = 16
 
 [node name="Portals" type="Node3D" parent="."]
-
 
 [node name="Portal_01" type="Area3D" parent="Portals"]
 transform = Transform3D(0.0000, 0, 1.0000, 0, 1, 0, -1.0000, 0, 0.0000, 14.00, 2.0, 0.00)
@@ -94,8 +102,9 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_01"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "01: The Stacks"
+text = "01: The Stacks [Press 1]"
 font_size = 48
 outline_size = 10
 
@@ -111,8 +120,9 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_02"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "02: Halliday's Journal"
+text = "02: Halliday's Journal [Press 2]"
 font_size = 48
 outline_size = 10
 
@@ -128,8 +138,9 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_03"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "03: Copper Race"
+text = "03: Copper Race [Press 3]"
 font_size = 48
 outline_size = 10
 
@@ -145,8 +156,9 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_04"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "04: Distracted Globe"
+text = "04: Distracted Globe [Press 4]"
 font_size = 48
 outline_size = 10
 
@@ -162,8 +174,9 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_05"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "05: Retro Arcade"
+text = "05: Retro Arcade [Press 5]"
 font_size = 48
 outline_size = 10
 
@@ -179,8 +192,9 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_06"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "06: Planet Doom"
+text = "06: Planet Doom [Press 6]"
 font_size = 48
 outline_size = 10
 
@@ -196,8 +210,9 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_07"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "07: Overlook Hotel"
+text = "07: Overlook Hotel [Press 7]"
 font_size = 48
 outline_size = 10
 
@@ -213,8 +228,9 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_08"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "08: IOI Citadel"
+text = "08: IOI Citadel [Press 8]"
 font_size = 48
 outline_size = 10
 
@@ -230,8 +246,9 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_09"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "09: Crystal Castle"
+text = "09: Crystal Castle [Press 9]"
 font_size = 48
 outline_size = 10
 
@@ -247,7 +264,8 @@ shape = SubResource("Shape_Portal")
 
 [node name="Label3D" type="Label3D" parent="Portals/Portal_10"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
 pixel_size = 0.015
-text = "10: Easter Egg"
+text = "10: Easter Egg [Press 0]"
 font_size = 48
 outline_size = 10
