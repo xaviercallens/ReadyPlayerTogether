@@ -1,3 +1,16 @@
+import os
+
+BASE_DIR = r"D:\xdev\Oasis"
+
+def write_file(filepath, content):
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content.strip())
+
+# ==============================================================================
+# UPDATED THIRD PERSON CONTROLLER WITH DUAL JOYSTICK & KEYBOARD CONTROLS
+# ==============================================================================
+CONTROLLER_GD = """
 extends CharacterBody3D
 
 # ==============================================================================
@@ -107,3 +120,8 @@ func spawn_delorean_with_cinematic_camera() -> void:
 	tween.tween_interval(1.5)
 	tween.tween_property(spring_arm, "spring_length", original_spring_length, 0.6) # Zoom out
 	print("🏎️ [JOYSTICK SPAWNER] DeLorean Materialized via Gamepad/Keyboard!")
+"""
+
+write_file(os.path.join(BASE_DIR, "scripts/player_vr/third_person_controller.gd"), CONTROLLER_GD)
+
+print("Gamepad / Joystick controls & RPO Mannequin / DeLorean integration updated successfully!")
