@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://virtual_portal_screen_scene"]
+
+[ext_resource type="Script" path="res://scripts/ui/virtual_portal_screen.gd" id="1_script"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_PortalScreen"]
+albedo_color = Color(0.0, 0.9, 1.0, 1)
+metallic = 0.9
+roughness = 0.1
+emission_enabled = true
+emission = Color(0.0, 0.9, 1.0, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="BoxMesh" id="Mesh_Screen"]
+material = SubResource("Mat_PortalScreen")
+size = Vector3(4.0, 2.5, 0.1)
+
+[node name="VirtualPortalScreen" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="ScreenMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+mesh = SubResource("Mesh_Screen")
+
+[node name="Label3D" type="Label3D" parent="ScreenMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.08)
+billboard = 1
+pixel_size = 0.015
+text = "MATRIX-GAME 2.0 VIRTUAL PORTAL
+[Dynamic AI World Streaming @ 25 FPS]"
+font_size = 38
+outline_size = 8

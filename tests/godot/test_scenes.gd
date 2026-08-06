@@ -36,7 +36,8 @@ func _init():
 		"res://scenes/ui/scene_navigator.tscn",
 		"res://scenes/vehicles/delorean_car.tscn",
 		"res://scenes/characters/rpo_mannequin_male.tscn",
-		"res://scenes/ui/command_menu.tscn"
+		"res://scenes/ui/command_menu.tscn",
+		"res://scenes/ui/virtual_portal_screen.tscn"
 	]
 	
 	var all_passed = true
