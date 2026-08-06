@@ -1,24 +1,37 @@
 extends Node3D
 
 # ==============================================================================
-# PROJET OASIS - Central Hub Controller (Halliday's Arcade Lounge)
-# Managed by Son (Pilot) & Father (Navigator)
+# PROJET OASIS - Cyberpunk Hub Central Controller
+# Manages portal teleportation to the 10 Ready Player One demo scenes.
 # ==============================================================================
 
-@export var keys_found: int = 0
-@export var player_name: str = "Parzival_Jr"
-
-@onready var status_label: Label3D = $CyberGrid/StatusLabel3D
+@export var default_avatar_url: String = "https://models.readyplayer.me/64bfa15f0e72c63d7e3934a6.glb"
 
 func _ready() -> void:
-	print("[OASIS HUB] Welcome to the OASIS Central Hub, " + player_name + "!")
-	update_portal_status()
+	print("[OASIS HUB] Cyberpunk Hub initialized. RTX 2070 Shaders Active.")
+	_connect_portals()
 
-func update_portal_status() -> void:
-	if status_label:
-		status_label.text = "OASIS HUB - Clés Trouvées: " + str(keys_found) + " / 3\n[Portail 1: Clé de Cuivre OUVERT]"
+func _connect_portals() -> void:
+	for i in range(1, 11):
+		var portal_name = "Portal_%02d" % i
+		var portal_node = get_node_or_null("Portals/" + portal_name)
+		if portal_node:
+			portal_node.body_entered.connect(_on_portal_entered.bind(i))
 
-func _on_portal_copper_body_entered(body: Node3D) -> void:
-	if body.name == "VRPlayer" or body.is_in_group("player"):
-		print("[OASIS HUB] Entering Copper Key Portal...")
-		get_tree().change_scene_to_file("res://scenes/key_copper/copper_key_level.tscn")
+func _on_portal_entered(body: Node3D, demo_index: int) -> void:
+	if body.is_in_group("player"):
+		print("[OASIS HUB] Player entered Portal %02d! Teleporting..." % demo_index)
+		var scene_paths = [
+			"res://scenes/demos/scene_01_the_stacks.tscn",
+			"res://scenes/demos/scene_02_hallidays_journal.tscn",
+			"res://scenes/demos/scene_03_copper_race.tscn",
+			"res://scenes/demos/scene_04_distracted_globe.tscn",
+			"res://scenes/demos/scene_05_arcade_retro.tscn",
+			"res://scenes/demos/scene_06_planet_doom.tscn",
+			"res://scenes/demos/scene_07_overlook_hotel.tscn",
+			"res://scenes/demos/scene_08_ioi_citadel.tscn",
+			"res://scenes/demos/scene_09_crystal_castle.tscn",
+			"res://scenes/demos/scene_10_easter_egg.tscn"
+		]
+		if demo_index >= 1 and demo_index <= scene_paths.size():
+			get_tree().change_scene_to_file(scene_paths[demo_index - 1])

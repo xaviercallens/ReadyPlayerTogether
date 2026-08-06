@@ -1,56 +1,249 @@
-[gd_scene load_steps=7 format=3 uid="uid://oasis_hub_scene_001"]
+[gd_scene load_steps=12 format=3 uid="uid://oasis_hub_cyberpunk"]
 
 [ext_resource type="Script" path="res://scripts/hub/oasis_hub.gd" id="1_hub_script"]
+[ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="2_player"]
 
-[subresource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
-albedo_color = Color(0.08, 0.04, 0.15, 1)
-emission_enabled = true
-emission = Color(0.2, 0.05, 0.4, 1)
-emission_energy_multiplier = 0.5
+[subresource type="Environment" id="Environment_cyberpunk"]
+background_mode = 1
+background_color = Color(0.02, 0.01, 0.05, 1)
+glow_enabled = true
+glow_intensity = 2.5
+glow_bloom = 0.6
+glow_blend_mode = 0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.015
+volumetric_fog_albedo = Color(0.0, 0.7, 1.0, 1)
+ssr_enabled = true
 
-[subresource type="PlaneMesh" id="PlaneMesh_floor"]
-material = SubResource("StandardMaterial3D_floor")
-size = Vector2(40, 40)
+[subresource type="StandardMaterial3D" id="Mat_Floor"]
+albedo_color = Color(0.05, 0.05, 0.08, 1)
+metallic = 0.85
+roughness = 0.15
 
-[subresource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(40, 0.1, 40)
+[subresource type="CylinderMesh" id="Mesh_Floor"]
+material = SubResource("Mat_Floor")
+top_radius = 20.0
+bottom_radius = 20.0
+height = 0.5
 
-[subresource type="StandardMaterial3D" id="StandardMaterial3D_neon_portal"]
+[subresource type="StandardMaterial3D" id="Mat_Portal"]
 albedo_color = Color(0.0, 1.0, 0.8, 1)
 emission_enabled = true
-emission = Color(0.0, 0.9, 0.9, 1)
-emission_energy_multiplier = 2.0
+emission = Color(0.0, 1.0, 0.8, 1)
+emission_energy_multiplier = 4.0
 
-[subresource type="BoxMesh" id="BoxMesh_portal"]
-material = SubResource("StandardMaterial3D_neon_portal")
-size = Vector3(3, 4, 0.5)
+[subresource type="TorusMesh" id="Mesh_Portal"]
+material = SubResource("Mat_Portal")
+inner_radius = 1.8
+outer_radius = 2.2
+
+[subresource type="CylinderShape3D" id="Shape_Portal"]
+height = 3.0
+radius = 2.0
+
+[subresource type="BoxShape3D" id="Shape_Floor"]
+size = Vector3(40, 0.5, 40)
 
 [node name="OasisHub" type="Node3D"]
 script = ExtResource("1_hub_script")
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_cyberpunk")
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 15, 0)
-light_color = Color(0.9, 0.7, 1, 1)
+light_color = Color(0.4, 0.8, 1.0, 1)
+light_energy = 1.5
 shadow_enabled = true
 
-[node name="CyberGrid" type="Node3D" parent="."]
+[node name="CentralPlatform" type="StaticBody3D" parent="."]
 
-[node name="FloorMesh" type="MeshInstance3D" parent="CyberGrid"]
-mesh = SubResource("PlaneMesh_floor")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CentralPlatform"]
+mesh = SubResource("Mesh_Floor")
 
-[node name="FloorStaticBody" type="StaticBody3D" parent="CyberGrid/FloorMesh"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CentralPlatform"]
+shape = SubResource("Shape_Floor")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CyberGrid/FloorMesh/FloorStaticBody"]
-shape = SubResource("BoxShape3D_floor")
+[node name="PCPlayer" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="StatusLabel3D" type="Label3D" parent="CyberGrid"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -8)
-pixel_size = 0.01
-text = "OASIS CENTRAL HUB
-Clés Trouvées: 0 / 3"
+[node name="HubTitle" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, -10)
+pixel_size = 0.02
+text = "WELCOME TO THE OASIS
+Ready Player Together"
+font_size = 72
+outline_size = 16
+
+[node name="Portals" type="Node3D" parent="."]
+
+
+[node name="Portal_01" type="Area3D" parent="Portals"]
+transform = Transform3D(0.0000, 0, 1.0000, 0, 1, 0, -1.0000, 0, 0.0000, 14.00, 2.0, 0.00)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_01"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_01"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_01"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "01: The Stacks"
 font_size = 48
-outline_size = 12
+outline_size = 10
 
-[node name="CopperPortalMesh" type="MeshInstance3D" parent="CyberGrid"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -10)
-mesh = SubResource("BoxMesh_portal")
+[node name="Portal_02" type="Area3D" parent="Portals"]
+transform = Transform3D(0.5878, 0, 0.8090, 0, 1, 0, -0.8090, 0, 0.5878, 11.33, 2.0, 8.23)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_02"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_02"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_02"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "02: Halliday's Journal"
+font_size = 48
+outline_size = 10
+
+[node name="Portal_03" type="Area3D" parent="Portals"]
+transform = Transform3D(0.9511, 0, 0.3090, 0, 1, 0, -0.3090, 0, 0.9511, 4.33, 2.0, 13.31)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_03"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_03"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_03"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "03: Copper Race"
+font_size = 48
+outline_size = 10
+
+[node name="Portal_04" type="Area3D" parent="Portals"]
+transform = Transform3D(0.9511, 0, -0.3090, 0, 1, 0, 0.3090, 0, 0.9511, -4.33, 2.0, 13.31)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_04"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_04"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_04"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "04: Distracted Globe"
+font_size = 48
+outline_size = 10
+
+[node name="Portal_05" type="Area3D" parent="Portals"]
+transform = Transform3D(0.5878, 0, -0.8090, 0, 1, 0, 0.8090, 0, 0.5878, -11.33, 2.0, 8.23)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_05"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_05"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_05"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "05: Retro Arcade"
+font_size = 48
+outline_size = 10
+
+[node name="Portal_06" type="Area3D" parent="Portals"]
+transform = Transform3D(0.0000, 0, -1.0000, 0, 1, 0, 1.0000, 0, 0.0000, -14.00, 2.0, 0.00)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_06"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_06"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_06"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "06: Planet Doom"
+font_size = 48
+outline_size = 10
+
+[node name="Portal_07" type="Area3D" parent="Portals"]
+transform = Transform3D(-0.5878, 0, -0.8090, 0, 1, 0, 0.8090, 0, -0.5878, -11.33, 2.0, -8.23)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_07"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_07"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_07"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "07: Overlook Hotel"
+font_size = 48
+outline_size = 10
+
+[node name="Portal_08" type="Area3D" parent="Portals"]
+transform = Transform3D(-0.9511, 0, -0.3090, 0, 1, 0, 0.3090, 0, -0.9511, -4.33, 2.0, -13.31)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_08"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_08"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_08"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "08: IOI Citadel"
+font_size = 48
+outline_size = 10
+
+[node name="Portal_09" type="Area3D" parent="Portals"]
+transform = Transform3D(-0.9511, 0, 0.3090, 0, 1, 0, -0.3090, 0, -0.9511, 4.33, 2.0, -13.31)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_09"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_09"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_09"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "09: Crystal Castle"
+font_size = 48
+outline_size = 10
+
+[node name="Portal_10" type="Area3D" parent="Portals"]
+transform = Transform3D(-0.5878, 0, 0.8090, 0, 1, 0, -0.8090, 0, -0.5878, 11.33, 2.0, -8.23)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portals/Portal_10"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("Mesh_Portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portals/Portal_10"]
+shape = SubResource("Shape_Portal")
+
+[node name="Label3D" type="Label3D" parent="Portals/Portal_10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+pixel_size = 0.015
+text = "10: Easter Egg"
+font_size = 48
+outline_size = 10
