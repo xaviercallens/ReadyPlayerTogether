@@ -1,64 +1,26 @@
 extends XROrigin3D
 
 # ==============================================================================
-# PROJET OASIS - VR Player Rig Controller (OpenXR for Meta Quest 3S)
-# Designed for Father-Son Pair Programming
+# PROJET OASIS - Quest 3S VR Player Rig (Godot XR Tools Architecture)
+# Automatically initializes OpenXR if connected, with 3D hands & teleport.
 # ==============================================================================
 
-@export var move_speed: float = 3.0
-@export var turn_speed: float = 1.5
+var xr_interface: XRInterface
 
-@onready var camera: XRCamera3D = $XRCamera3D
-@onready var left_controller: XRController3D = $LeftHandController
-@onready var right_controller: XRController3D = $RightHandController
-
-var interface: XRInterface
+@onready var left_controller: XRController3D = $MainGauche
+@onready var right_controller: XRController3D = $MainDroite
+@onready var vr_camera: XRCamera3D = $XRCamera3D
 
 func _ready() -> void:
-	interface = XRServer.find_interface("OpenXR")
-	if interface and interface.is_initialized():
-		print("[OASIS VR] OpenXR Interface initialized successfully!")
+	xr_interface = XRServer.find_interface("OpenXR")
+	if xr_interface and xr_interface.is_initialized():
+		print("=========================================")
+		print("🚀 CASQUE VR META QUEST 3S DÉTECTÉ ET ACTIF !")
+		print("=========================================")
 		get_viewport().use_xr = true
 	else:
-		print("[OASIS VR] Warning: OpenXR interface not initialized. Running in Desktop fallback mode.")
+		print("[VR RIG] Casque VR non détecté. Mode Bureau actif.")
 
 func _process(delta: float) -> void:
-	_handle_vr_movement(delta)
-
-func _handle_vr_movement(delta: float) -> void:
-	if not left_controller:
-		return
-	
-	# Read thumbstick input vector from left VR controller
-	var joystick_vector = left_controller.get_vector2("primary_thumbstick")
-	if joystick_vector.length() > 0.1:
-		# Calculate forward direction based on headset camera facing angle
-		var forward = -camera.global_transform.basis.z
-		var right = camera.global_transform.basis.x
-		forward.y = 0.0
-		right.y = 0.0
-		forward = forward.normalized()
-		right = right.normalized()
-		
-	# Move the XROrigin3D base
-		var move_dir = (forward * -joystick_vector.y) + (right * joystick_vector.x)
-		global_position += move_dir * move_speed * delta
-	else:
-		# PC KEYBOARD FALLBACK (For testing before Meta Quest 3S arrives)
-		var keyboard_input = Vector2.ZERO
-		if Input.is_action_pressed("move_forward"): keyboard_input.y -= 1
-		if Input.is_action_pressed("move_backward"): keyboard_input.y += 1
-		if Input.is_action_pressed("move_left"): keyboard_input.x -= 1
-		if Input.is_action_pressed("move_right"): keyboard_input.x += 1
-		
-		if keyboard_input.length() > 0:
-			keyboard_input = keyboard_input.normalized()
-			var forward = -camera.global_transform.basis.z
-			var right = camera.global_transform.basis.x
-			forward.y = 0.0
-			right.y = 0.0
-			forward = forward.normalized()
-			right = right.normalized()
-			
-			var move_dir = (forward * keyboard_input.y) + (right * keyboard_input.x)
-			global_position += move_dir * move_speed * delta
+	if left_controller.is_button_pressed("by_button") or right_controller.is_button_pressed("by_button"):
+		print("[VR CONTROLLER] Menu Button pressed!")

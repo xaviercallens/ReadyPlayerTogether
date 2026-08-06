@@ -1,20 +1,48 @@
-[gd_scene load_steps=2 format=3 uid="uid://oasis_vr_player_001"]
+[gd_scene load_steps=7 format=3 uid="uid://vr_player_rig_scene"]
 
 [ext_resource type="Script" path="res://scripts/player_vr/vr_player.gd" id="1_vr_script"]
+[ext_resource type="PackedScene" uid="uid://scene_navigator_ui" path="res://scenes/ui/scene_navigator.tscn" id="2_navigator"]
+[ext_resource type="PackedScene" uid="uid://command_menu_ui" path="res://scenes/ui/command_menu.tscn" id="3_command_menu"]
 
-[node name="VRPlayer" type="XROrigin3D"]
+[sub_resource type="StandardMaterial3D" id="Mat_VRHand"]
+albedo_color = Color(0.0, 0.9, 1.0, 1)
+metallic = 0.8
+roughness = 0.2
+emission_enabled = true
+emission = Color(0.0, 0.9, 1.0, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxMesh" id="Mesh_LeftHand"]
+material = SubResource("Mat_VRHand")
+size = Vector3(0.1, 0.08, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_RightHand"]
+material = SubResource("Mat_VRHand")
+size = Vector3(0.1, 0.08, 0.18)
+
+[node name="VRPlayerRig" type="XROrigin3D"]
 script = ExtResource("1_vr_script")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 current = true
 
-[node name="LeftHandController" type="XRController3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 1.2, -0.4)
+[node name="MainGauche" type="XRController3D" parent="."]
 tracker = &"left_hand"
-pose = &"aim"
+pose = &"default"
 
-[node name="RightHandController" type="XRController3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 1.2, -0.4)
+[node name="LeftHandMesh" type="MeshInstance3D" parent="MainGauche"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.05)
+mesh = SubResource("Mesh_LeftHand")
+
+[node name="MainDroite" type="XRController3D" parent="."]
 tracker = &"right_hand"
-pose = &"aim"
+pose = &"default"
+
+[node name="RightHandMesh" type="MeshInstance3D" parent="MainDroite"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.05)
+mesh = SubResource("Mesh_RightHand")
+
+[node name="SceneNavigator" parent="." instance=ExtResource("2_navigator")]
+
+[node name="CommandMenu" parent="." instance=ExtResource("3_command_menu")]

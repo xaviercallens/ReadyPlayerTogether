@@ -1,37 +1,35 @@
-# 🚀 GUIDE DU PILOTE (Niveau 1)
+# 🚀 Guide du Pilote VR OASIS - Père & Fils (Quest 3S & Godot 4)
 
-Bienvenue dans l'OASIS ! Avant que le casque **Meta Quest 3S** n'arrive, tu as déjà une mission très importante.
-Ton papa (le Navigateur) a préparé le code de base, mais c'est à toi (le Pilote) de tester le jeu sur l'ordinateur !
+Bienvenue dans votre guide officiel pour développer et jouer ensemble sur **Projet OASIS** !
 
-## 🕹️ Ta Mission du Jour : Tester la Clé de Cuivre sur PC !
+---
 
-Même sans casque VR, tu peux te déplacer dans le jeu grâce au "Mode Clavier" que nous venons d'ajouter.
+### 🎮 Les 6 Étapes Réalisées Ensemble :
 
-### Comment jouer dans Godot :
-1. Demande à ton papa d'ouvrir le logiciel **Godot Engine 4** et d'ouvrir le `Projet OASIS`.
-2. En haut à droite, clique sur le bouton **Play (F5)** (ou le petit triangle ⏯️).
-3. Le HUB Central va s'ouvrir.
-4. Utilise les touches de ton clavier pour te déplacer comme dans un jeu PC :
-   - **W / Z** : Avancer
-   - **S** : Reculer
-   - **A / Q** : Gauche
-   - **D** : Droite
+1. **Étape 1 : Création du Projet**
+   - Projet : `D:\xdev\Oasis` (Nom : *Projet OASIS VR*).
+   - Mode de Rendu : **Mobile / Forward+** optimisé pour Quest 3S.
 
-### Ce que tu dois observer :
-- Avance vers le portail bleu fluo (Portail de la Clé de Cuivre).
-- Quand tu le touches, tu vas être téléporté dans le mini-jeu de la **Clé de Cuivre** !
-- Essaie d'attraper la Clé flottante (le bloc orange lumineux).
-- Regarde le score changer à l'écran !
+2. **Étape 2 : Plugins XR & Godot XR Tools**
+   - Plugins installés : `Godot OpenXR Vendors` & `Godot XR Tools`.
 
-## 🛠️ Le Code à comprendre (GDScript)
-Regarde le fichier `scripts/key_copper/copper_key_level.gd` avec ton papa. Tu vas y voir ceci :
+3. **Étape 3 : Configuration VR**
+   - OpenXR activé pour Quest 3S via Link / AirLink / SteamVR.
 
-```gdscript
-func add_points(amount: int) -> void:
-	current_score += amount
-	update_score_ui()
-	if current_score >= 100 and not key_unlocked:
-		unlock_copper_key()
-```
+4. **Étape 4 : Rig du Joueur Virtual (Corps & Mains 3D)**
+   - `XROrigin3D` ➡️ `XRCamera3D` + `MainGauche` (`left_hand`) + `MainDroite` (`right_hand`).
 
-**Question pour toi :** Si tu veux que le jeu demande **500 points** au lieu de 100 pour gagner la clé, quel chiffre dois-tu changer dans ce code ? Essaie de le changer avec ton papa et de relancer le jeu !
+5. **Étape 5 : Code d'Initialisation GDScript**
+   - Détection automatique du casque Meta Quest 3S avec bascule VR dynamique.
+
+6. **Étape 6 : Test Dual Mode (PC Bureau & VR Headset)**
+   - Jouez au **clavier/souris/manette** sur PC Bureau.
+   - Branchez le **Meta Quest 3S** avec le câble Link pour plonger dans l'OASIS à 360° !
+
+---
+
+### ⌨️ Commandes Rapides en Jeu :
+- **`Shift + F`** : Téléporteur texte avec recherche autocomplétée.
+- **`L`** : Galerie d'Exposition Showroom.
+- **`Tab`** : Menu Master des Contrôles.
+- **`1` à `9`, `0`** : Téléportation immédiate vers les 10 Démos.
