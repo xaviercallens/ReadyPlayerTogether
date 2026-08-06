@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="1_player"]
 
-[subresource type="Environment" id="Environment_01_the_stacks"]
+[sub_resource type="Environment" id="Environment_01_the_stacks"]
 background_mode = 1
 background_color = Color(0.2, 0.2, 0.2, 1)
 glow_enabled = true
@@ -13,11 +13,11 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.02
 volumetric_fog_albedo = Color(0.8, 0.6, 0.2, 1)
 
-[subresource type="StandardMaterial3D" id="Mat_01_the_stacks"]
+[sub_resource type="StandardMaterial3D" id="Mat_01_the_stacks"]
 albedo_color = Color(0.2, 0.2, 0.2, 1)
 roughness = 0.2
 
-[subresource type="PlaneMesh" id="Plane_01_the_stacks"]
+[sub_resource type="PlaneMesh" id="Plane_01_the_stacks"]
 material = SubResource("Mat_01_the_stacks")
 size = Vector2(50, 50)
 

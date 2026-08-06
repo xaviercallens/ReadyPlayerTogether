@@ -60,7 +60,7 @@ PC_PLAYER_TSCN = """
 
 [ext_resource type="Script" path="res://scripts/player_vr/pc_player.gd" id="1_pc_script"]
 
-[subresource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 
 [node name="PCPlayer" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_pc_script")

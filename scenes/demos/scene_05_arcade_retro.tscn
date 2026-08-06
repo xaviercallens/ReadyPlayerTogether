@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="1_player"]
 
-[subresource type="Environment" id="Environment_05_arcade_retro"]
+[sub_resource type="Environment" id="Environment_05_arcade_retro"]
 background_mode = 1
 background_color = Color(0.1, 0.1, 0.1, 1)
 glow_enabled = true
@@ -13,11 +13,11 @@ volumetric_fog_enabled = false
 volumetric_fog_density = 0.02
 volumetric_fog_albedo = Color(0.0, 1.0, 0.0, 1)
 
-[subresource type="StandardMaterial3D" id="Mat_05_arcade_retro"]
+[sub_resource type="StandardMaterial3D" id="Mat_05_arcade_retro"]
 albedo_color = Color(0.1, 0.1, 0.1, 1)
 roughness = 0.2
 
-[subresource type="PlaneMesh" id="Plane_05_arcade_retro"]
+[sub_resource type="PlaneMesh" id="Plane_05_arcade_retro"]
 material = SubResource("Mat_05_arcade_retro")
 size = Vector2(50, 50)
 

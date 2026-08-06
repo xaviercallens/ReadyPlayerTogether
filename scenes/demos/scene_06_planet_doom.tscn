@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="1_player"]
 
-[subresource type="Environment" id="Environment_06_planet_doom"]
+[sub_resource type="Environment" id="Environment_06_planet_doom"]
 background_mode = 1
 background_color = Color(0.1, 0.0, 0.0, 1)
 glow_enabled = true
@@ -13,11 +13,11 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.02
 volumetric_fog_albedo = Color(1.0, 0.2, 0.0, 1)
 
-[subresource type="StandardMaterial3D" id="Mat_06_planet_doom"]
+[sub_resource type="StandardMaterial3D" id="Mat_06_planet_doom"]
 albedo_color = Color(0.1, 0.0, 0.0, 1)
 roughness = 0.2
 
-[subresource type="PlaneMesh" id="Plane_06_planet_doom"]
+[sub_resource type="PlaneMesh" id="Plane_06_planet_doom"]
 material = SubResource("Mat_06_planet_doom")
 size = Vector2(50, 50)
 
