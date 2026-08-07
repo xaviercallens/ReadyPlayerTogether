@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OASIS Virtual Universe — Test & Control Station</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #070913;
+            --bg-card: rgba(14, 20, 40, 0.75);
+            --bg-card-hover: rgba(22, 32, 60, 0.85);
+            --border-glow: rgba(0, 243, 255, 0.25);
+            --border-active: #00f3ff;
+            --neon-cyan: #00f3ff;
+            --neon-magenta: #ff0055;
+            --neon-purple: #9d00ff;
+            --neon-green: #00ff66;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --glass-blur: blur(16px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(157, 0, 255, 0.15), transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(0, 243, 255, 0.12), transparent 40%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- Header Bar --- */
+        header {
+            background: rgba(10, 14, 26, 0.9);
+            backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border-glow);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            color: #000;
+            font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+        }
+
+        .brand-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            background: linear-gradient(90deg, #fff, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-sub {
+            font-size: 0.75rem;
+            color: var(--neon-magenta);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .status-pill {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-glow);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--neon-green);
+            box-shadow: 0 0 8px var(--neon-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+
+        /* --- Main Content Layout --- */
+        main {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 24px;
+            padding: 24px;
+            flex: 1;
+            max-width: 1800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 1200px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Section Panels --- */
+        .panel {
+            background: var(--bg-card);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 12px;
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--neon-cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* --- Canvas Viewport & Controls --- */
+        .viewport-container {
+            position: relative;
+            width: 100%;
+            height: 440px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-glow);
+            box-shadow: inset 0 0 30px rgba(0, 243, 255, 0.1);
+        }
+
+        canvas#godotCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .viewport-overlay {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            font-size: 0.75rem;
+            color: var(--neon-cyan);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .controls-hint {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .key-badge {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--neon-cyan);
+        }
+
+        /* --- Matrix Dream Portal Stream --- */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .portal-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .portal-canvas-wrap {
+            width: 100%;
+            height: 160px;
+            background: #050711;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        canvas#dreamPortalCanvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- Tabs --- */
+        .tab-bar {
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 16px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--neon-cyan);
+            background: rgba(0, 243, 255, 0.12);
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* --- Form Inputs & Buttons --- */
+        label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        input[type="text"], select, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 243, 255, 0.25);
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="text"]:focus, select:focus, textarea:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 243, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--neon-cyan);
+        }
+
+        /* --- Dialogue Chat Box --- */
+        .chat-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px;
+            height: 220px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-msg {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            max-width: 85%;
+            line-height: 1.4;
+        }
+
+        .chat-msg.user {
+            background: rgba(0, 243, 255, 0.15);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            align-self: flex-end;
+            color: #fff;
+        }
+
+        .chat-msg.npc {
+            background: rgba(157, 0, 255, 0.15);
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            align-self: flex-start;
+            color: #e2e8f0;
+        }
+
+        .npc-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--neon-cyan);
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        /* --- Code Review / QA Output Box --- */
+        .code-output {
+            background: #03050d;
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: #00ff66;
+            max-height: 280px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* --- VRAM Gauge Widget --- */
+        .vram-widget {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-glow);
+            padding: 12px 16px;
+            border-radius: 10px;
+        }
+
+        .vram-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 6px;
+        }
+
+        .vram-bar-fill {
+            height: 100%;
+            width: 35%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+            border-radius: 5px;
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Bar -->
+    <header>
+        <div class="brand">
+            <div class="brand-logo">O</div>
+            <div>
+                <div class="brand-title">PROJET OASIS</div>
+                <div class="brand-sub">Virtual Universe Test & Control Station</div>
+            </div>
+        </div>
+
+        <div class="header-status">
+            <div class="status-pill">
+                <div class="dot"></div>
+                <span id="envIndicator">MODE: LOCAL (RTX 2070 8GB)</span>
+            </div>
+            <div class="status-pill">
+                <span>AMCP Server:</span>
+                <strong style="color: var(--neon-cyan);" id="serverStatus">ONLINE (:8005)</strong>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main>
+        <!-- LEFT COLUMN: Godot Engine Canvas & Matrix Streamer -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span>🎮</span> GODOT 4 VIRTUAL HUB & PLAYGROUND
+                </div>
+                <div style="font-size: 0.75rem; color: var(--neon-cyan);">60 FPS Forward+ Render</div>
+            </div>
+
+            <!-- Godot 3D Canvas Viewport -->
+            <div class="viewport-container">
+                <div class="viewport-overlay">OASIS_HUB_3D.TSCN — READY PLAYER ONE SIMULATOR</div>
+                <canvas id="godotCanvas"></canvas>
+            </div>
+
+            <div class="controls-hint">
+                <div class="key-badge">W A S D : Move Avatar</div>
+                <div class="key-badge">SPACE : Jump</div>
+                <div class="key-badge">F : Spawn DeLorean</div>
+                <div class="key-badge">MOUSE : Orbit Camera</div>
+            </div>
+
+            <!-- Matrix Dream Portal & VRAM Gauge -->
+            <div class="portal-grid">
+                <div class="portal-card">
+                    <div style="font-size: 0.8rem; font-family: 'Orbitron'; color: var(--neon-magenta);">
+                        🌀 MATRIX-GAME 2.0 PORTAL
+                    </div>
+                    <div class="portal-canvas-wrap">
+                        <canvas id="dreamPortalCanvas"></canvas>
+                    </div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); text-align: center;">
+                        Streamed at 25 FPS (ws://127.0.0.1:8006/ws/dream_portal)
+                    </div>
+                </div>
+
+                <div class="portal-card" style="justify-content: space-between;">
+                    <div>
+                        <div style="font-size: 0.8rem; font-family: 'Orbitron'; color: var(--neon-cyan);">
+                            ⚡ RTX 2070 VRAM GOVERNOR
+                        </div>
+                        <div class="vram-widget" style="margin-top: 10px; flex-direction: column; align-items: flex-start;">
+                            <div style="display: flex; justify-content: space-between; width: 100%; font-size: 0.8rem;">
+                                <span>Used VRAM:</span>
+                                <strong id="vramText" style="color: var(--neon-cyan);">2.8 GB / 7.5 GB</strong>
+                            </div>
+                            <div class="vram-bar-bg">
+                                <div class="vram-bar-fill" id="vramBar" style="width: 37%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-secondary" onclick="triggerDeLoreanSpawn()" style="width: 100%; margin-top: 8px;">
+                        🚗 Spawn DeLorean (Holographic Sweep)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Interactive AI Testing Suite -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span>🧪</span> AI AGENT MESH & QA STUDIO
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-bar">
+                <button class="tab-btn active" onclick="switchTab('tabDialogue')">NPC Dialogue</button>
+                <button class="tab-btn" onclick="switchTab('tabPBR')">PBR Foundry</button>
+                <button class="tab-btn" onclick="switchTab('tabQA')">Gemini QA</button>
+            </div>
+
+            <!-- TAB 1: NPC Dialogue Studio -->
+            <div id="tabDialogue" class="tab-content active">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label>Target NPC:</label>
+                        <select id="npcSelector">
+                            <option value="Parzival">Parzival (Gunter Hero)</option>
+                            <option value="Art3mis">Art3mis (High Five Warrior)</option>
+                            <option value="Anorak">Anorak (Halliday AI Guardian)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Persona Preset:</label>
+                        <select id="personaSelector">
+                            <option value="Guardian PNJ Copper Key">Copper Key Guardian</option>
+                            <option value="Ready Player One Veteran">RPO Veteran Gunter</option>
+                            <option value="Cyberpunk Mechanic">DeLorean Engineer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="chat-box" id="chatBox">
+                    <div class="chat-msg npc">
+                        <div class="npc-name">Anorak</div>
+                        Bienvenue dans l'OASIS ! Parle-moi pour obtenir les indices vers la Clé de Cuivre.
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="speechInput" placeholder="Posez une question au PNJ (ex: Où se trouve la Clé de Cuivre ?)" onkeydown="if(event.key==='Enter') sendSpeech()">
+                    <button class="btn" onclick="sendSpeech()">Envoyer</button>
+                </div>
+            </div>
+
+            <!-- TAB 2: PBR Texture Foundry -->
+            <div id="tabPBR" class="tab-content">
+                <label>Prompt Matériau PBR (ComfyUI / SDXL):</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="pbrPromptInput" placeholder="ex: glowing cyberpunk neon grid floor">
+                    <button class="btn" onclick="generatePBR()">Générer Matériau</button>
+                </div>
+
+                <div id="pbrOutput" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-glow); padding: 12px; border-radius: 8px; font-size: 0.85rem; display: none;">
+                    <div style="font-weight: 700; color: var(--neon-cyan); margin-bottom: 6px;" id="pbrMatName">Material</div>
+                    <div style="color: var(--text-muted); font-size: 0.8rem;">
+                        <div>Albedo: <code id="pbrAlbedo" style="color:#fff;">res://...</code></div>
+                        <div>Normal: <code id="pbrNormal" style="color:#fff;">res://...</code></div>
+                        <div>Roughness: <code id="pbrRoughness" style="color:#fff;">res://...</code></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: Gemini QA & Architecture Audit -->
+            <div id="tabQA" class="tab-content">
+                <label>Script GDScript à Auditer:</label>
+                <select id="qaFileSelector">
+                    <option value="scripts/player/third_person_controller.gd">scripts/player/third_person_controller.gd</option>
+                    <option value="scripts/vehicles/delorean_spawner.gd">scripts/vehicles/delorean_spawner.gd</option>
+                    <option value="scripts/ai/agent_mesh_bridge.gd">scripts/ai/agent_mesh_bridge.gd</option>
+                    <option value="scripts/ai/godot_ai_dialog_manager.gd">scripts/ai/godot_ai_dialog_manager.gd</option>
+                    <option value="scripts/ui/arcade_portal_client.gd">scripts/ui/arcade_portal_client.gd</option>
+                </select>
+
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" onclick="runQA('review')">🔍 Code Review</button>
+                    <button class="btn btn-secondary" onclick="runQA('unittest')">🧪 Test GUT</button>
+                    <button class="btn btn-secondary" onclick="runQA('improve')">🏛️ Architecture</button>
+                </div>
+
+                <div class="code-output" id="qaOutput">// Les résultats d'audit Gemini 3.1 Pro s'afficheront ici...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 3D Canvas Visualizer Script (Three.js WebGL Engine Simulator) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.min.js"></script>
+
+    <script>
+        // --- Tab Switching ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // --- Simulated Godot 3D Hub Engine Visualizer (WebGL Three.js) ---
+        let scene, camera, renderer, mannequin, deloreanMesh;
+        let carProgress = 0, spawningCar = false;
+
+        function initGodotSimulator() {
+            const container = document.getElementById('godotCanvas');
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x050714);
+            scene.fog = new THREE.FogExp2(0x050714, 0.03);
+
+            camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 3, 7);
+            camera.lookAt(0, 1, 0);
+
+            renderer = new THREE.WebGLRenderer({ canvas: container, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+
+            // Grid Floor (Cyberpunk Style)
+            const grid = new THREE.GridHelper(40, 40, 0x00f3ff, 0x1a264a);
+            grid.position.y = 0;
+            scene.add(grid);
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+
+            const dirLight = new THREE.DirectionalLight(0x00f3ff, 0.8);
+            dirLight.position.set(5, 10, 7);
+            scene.add(dirLight);
+
+            const magentaLight = new THREE.PointLight(0xff0055, 1.5, 15);
+            magentaLight.position.set(-3, 2, -2);
+            scene.add(magentaLight);
+
+            // Avatar Mannequin (Simulated RPM Character)
+            const mannequinGroup = new THREE.Group();
+            
+            // Body
+            const bodyMat = new THREE.MeshStandardMaterial({ color: 0x00f3ff, roughness: 0.3, metalness: 0.8 });
+            const bodyGeo = new THREE.CylinderGeometry(0.3, 0.2, 1.2, 16);
+            const body = new THREE.Mesh(bodyGeo, bodyMat);
+            body.position.y = 0.9;
+            mannequinGroup.add(body);
+
+            // Head
+            const headGeo = new THREE.SphereGeometry(0.22, 16, 16);
+            const head = new THREE.Mesh(headGeo, bodyMat);
+            head.position.y = 1.65;
+            mannequinGroup.add(head);
+
+            mannequin = mannequinGroup;
+            scene.add(mannequin);
+
+            // Animate Loop
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // Idle hover motion
+                mannequin.position.y = Math.sin(Date.now() * 0.003) * 0.05;
+
+                // DeLorean Holographic Sweep Animation
+                if (spawningCar && deloreanMesh) {
+                    carProgress += 0.02;
+                    deloreanMesh.material.opacity = Math.min(carProgress, 1.0);
+                    if (carProgress >= 1.0) spawningCar = false;
+                }
+
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('godotCanvas');
+            if (container && renderer) {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+        });
+
+        initGodotSimulator();
+
+        // --- DeLorean Sci-Fi Spawner Trigger ---
+        function triggerDeLoreanSpawn() {
+            if (!deloreanMesh) {
+                const carGeo = new THREE.BoxGeometry(2.2, 0.8, 4.2);
+                const carMat = new THREE.MeshStandardMaterial({
+                    color: 0xff0055,
+                    metalness: 0.9,
+                    roughness: 0.2,
+                    transparent: true,
+                    opacity: 0.0
+                });
+                deloreanMesh = new THREE.Mesh(carGeo, carMat);
+                deloreanMesh.position.set(2.5, 0.4, -1);
+                scene.add(deloreanMesh);
+            }
+            carProgress = 0.0;
+            spawningCar = true;
+            alert("[OASIS] DeLorean spawned! Holographic construction progress sweep triggered.");
+        }
+
+        // --- Matrix Dream Portal Canvas Simulation ---
+        function initMatrixPortalStreamer() {
+            const portalCanvas = document.getElementById('dreamPortalCanvas');
+            const ctx = portalCanvas.getContext('2d');
+
+            function drawMatrixFrame() {
+                ctx.fillStyle = '#050714';
+                ctx.fillRect(0, 0, portalCanvas.width, portalCanvas.height);
+
+                // Noise effect
+                const imgData = ctx.createImageData(portalCanvas.width, portalCanvas.height);
+                for (let i = 0; i < imgData.data.length; i += 4) {
+                    const noise = Math.random() * 80;
+                    imgData.data[i] = noise + 100;     // R
+                    imgData.data[i+1] = noise;         // G
+                    imgData.data[i+2] = noise + 180;   // B (Cyberpunk Violet)
+                    imgData.data[i+3] = 255;
+                }
+                ctx.putImageData(imgData, 0, 0);
+
+                // Text
+                ctx.fillStyle = '#00f3ff';
+                ctx.font = '12px Orbitron';
+                ctx.fillText('MATRIX-GAME 2.0 DREAM PORTAL', 10, 25);
+                ctx.fillStyle = '#ff0055';
+                ctx.fillText('25 FPS | RTX 2070 STREAMING', 10, 45);
+
+                setTimeout(drawMatrixFrame, 1000 / 25); // 25 FPS
+            }
+            drawMatrixFrame();
+        }
+        initMatrixPortalStreamer();
+
+        // --- API Integration Calls ---
+        const SERVER_URL = "http://127.0.0.1:8005";
+
+        async function sendSpeech() {
+            const npc = document.getElementById('npcSelector').value;
+            const persona = document.getElementById('personaSelector').value;
+            const text = document.getElementById('speechInput').value;
+            if (!text.trim()) return;
+
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="chat-msg user">${text}</div>`;
+            document.getElementById('speechInput').value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                const res = await fetch(`${SERVER_URL}/api/mesh/speak`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ npc_name: npc, persona: persona, player_text: text, session_id: 'web_session' })
+                });
+                const data = await res.json();
+
+                chatBox.innerHTML += `
+                    <div class="chat-msg npc">
+                        <div class="npc-name">${data.npc_name || npc}</div>
+                        ${data.reply_text}
+                    </div>
+                `;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (err) {
+                chatBox.innerHTML += `<div class="chat-msg npc" style="border-color: red;"><div class="npc-name">Erreur</div>Impossible de contacter le serveur AMCP. Vérifiez que server.py est lancé.</div>`;
+            }
+        }
+
+        async function generatePBR() {
+            const prompt = document.getElementById('pbrPromptInput').value;
+            if (!prompt.trim()) return;
+
+            try {
+                const res = await fetch(`${SERVER_URL}/api/mesh/generate_pbr`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ material_prompt: prompt })
+                });
+                const data = await res.json();
+
+                document.getElementById('pbrOutput').style.display = 'block';
+                document.getElementById('pbrMatName').innerText = data.material_name;
+                document.getElementById('pbrAlbedo').innerText = data.albedo_map;
+                document.getElementById('pbrNormal').innerText = data.normal_map;
+                document.getElementById('pbrRoughness').innerText = data.roughness_map;
+            } catch (err) {
+                alert("Erreur lors de la génération de textures PBR.");
+            }
+        }
+
+        async function runQA(taskType) {
+            const file = document.getElementById('qaFileSelector').value;
+            const output = document.getElementById('qaOutput');
+            output.innerText = `⏳ Ananlyse Gemini 3.1 Pro en cours pour ${file} (${taskType})...`;
+
+            try {
+                const res = await fetch(`${SERVER_URL}/api/qa/${taskType}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ file_path: file })
+                });
+                const data = await res.json();
+                output.innerText = data.result || "Aucun résultat";
+            } catch (err) {
+                output.innerText = "❌ Erreur de connexion au serveur QA Gemini.";
+            }
+        }
+
+        // --- VRAM Periodic Polling ---
+        async function updateVRAM() {
+            try {
+                const res = await fetch(`${SERVER_URL}/api/vram/status`);
+                const data = await res.json();
+                const used = data.estimated_vram_used_gb || 2.8;
+                const max = data.max_vram_gb || 7.5;
+                const pct = Math.min((used / max) * 100, 100);
+
+                document.getElementById('vramText').innerText = `${used.toFixed(1)} GB / ${max} GB`;
+                document.getElementById('vramBar').style.width = `${pct}%`;
+            } catch (e) {
+                // Keep default visuals
+            }
+        }
+        setInterval(updateVRAM, 3000);
+    </script>
+</body>
+</html>

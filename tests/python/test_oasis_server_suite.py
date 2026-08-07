@@ -288,10 +288,13 @@ def test_qa_fastapi_server():
 
 def test_unified_mesh_server_endpoints():
     with TestClient(mesh_app) as client:
-        # 1. Index
+        # 1. Index / Web interface HTML
         res = client.get("/")
         assert res.status_code == 200
-        assert "system" in res.json()
+
+        api_res = client.get("/api/status")
+        assert api_res.status_code == 200
+        assert "system" in api_res.json()
 
         # 2. VRAM Status
         vram_res = client.get("/api/vram/status")

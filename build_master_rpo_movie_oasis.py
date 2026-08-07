@@ -11,7 +11,7 @@ def write_file(filepath, content):
 # MASTER READY PLAYER ONE MOVIE SPIRIT HUB SCENE (scenes/hub/oasis_master_rpo_movie.tscn)
 # ==============================================================================
 MASTER_HUB_TSCN = """
-[gd_scene load_steps=19 format=3 uid="uid://master_rpo_movie_hub"]
+[gd_scene load_steps=20 format=3 uid="uid://master_rpo_movie_hub"]
 
 [ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://delorean_car_scene" path="res://scenes/vehicles/delorean_car.tscn" id="2_delorean"]
@@ -54,9 +54,13 @@ roughness = 0.15
 
 [sub_resource type="CylinderMesh" id="Mesh_Plaza"]
 material = SubResource("Mat_PlazaFloor")
-top_radius = 45.0
-bottom_radius = 45.0
-height = 0.4
+top_radius = 50.0
+bottom_radius = 50.0
+height = 0.6
+
+[sub_resource type="CylinderShape3D" id="Shape_PlazaFloor"]
+height = 1.0
+radius = 50.0
 
 [sub_resource type="StandardMaterial3D" id="Mat_NeonRing"]
 albedo_color = Color(0.0, 0.9, 1.0, 1)
@@ -66,8 +70,8 @@ emission_energy_multiplier = 4.0
 
 [sub_resource type="TorusMesh" id="Mesh_Ring"]
 material = SubResource("Mat_NeonRing")
-inner_radius = 43.5
-outer_radius = 44.5
+inner_radius = 48.5
+outer_radius = 49.5
 
 [node name="OasisMasterRPOMovieHub" type="Node3D"]
 
@@ -80,15 +84,27 @@ light_color = Color(0.0, 0.9, 1.0, 1)
 light_energy = 1.8
 shadow_enabled = true
 
-[node name="PlazaFloor" type="MeshInstance3D" parent="."]
+[node name="GroundPlaza" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+
+[node name="PlazaCollision" type="CollisionShape3D" parent="GroundPlaza"]
+shape = SubResource("Shape_PlazaFloor")
+
+[node name="PlazaFloorMesh" type="MeshInstance3D" parent="GroundPlaza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 mesh = SubResource("Mesh_Plaza")
 
-[node name="NeonRing" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22, 0)
+[node name="NeonRing" type="MeshInstance3D" parent="GroundPlaza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52, 0)
 mesh = SubResource("Mesh_Ring")
 
+[node name="SafetyGroundBox" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0, 0)
+use_collision = true
+size = Vector3(150, 1, 150)
+
 [node name="PCPlayer" parent="." instance=ExtResource("1_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 8)
 
 [node name="DeLoreanTimeMachine" parent="." instance=ExtResource("2_delorean")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.0)
@@ -126,4 +142,4 @@ outline_size = 12
 
 write_file(os.path.join(BASE_DIR, "scenes/hub/oasis_master_rpo_movie.tscn"), MASTER_HUB_TSCN)
 
-print("Master Ready Player One Movie Spirit Hub Scene generated successfully!")
+print("Master Ready Player One Movie Spirit Hub Scene regenerated with solid ground physics!")

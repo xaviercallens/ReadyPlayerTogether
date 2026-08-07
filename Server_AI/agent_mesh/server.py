@@ -10,6 +10,9 @@ from dotenv import load_dotenv
 load_dotenv()  # Load .env file if present
 
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 
@@ -54,6 +57,20 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Enable CORS for Web Interface testing
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount Static Files
+static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
 
 # ===========================================================================
 # Models
@@ -72,10 +89,23 @@ class QARequest(BaseModel):
 
 
 # ===========================================================================
-# Routes — Core Mesh
+# Routes — Core Mesh & Web Interface
 # ===========================================================================
 @app.get("/")
+@app.get("/web")
 def index():
+    html_path = os.path.join(static_dir, "index.html")
+    if os.path.exists(html_path):
+        return FileResponse(html_path)
+    return {
+        "system": "Projet OASIS Unified AMCP",
+        "environment": ENVIRONMENT,
+        "llm_backend": "Ollama (Local 4-bit)" if ENVIRONMENT == "local" else "GCP Gemini API (Cloud)",
+        "services": ["speak", "generate_pbr", "qa/review", "qa/unittest", "qa/improve", "vram/status"],
+    }
+
+@app.get("/api/status")
+def api_status():
     return {
         "system": "Projet OASIS Unified AMCP",
         "environment": ENVIRONMENT,

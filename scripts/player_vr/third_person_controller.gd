@@ -90,6 +90,12 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+	# Void Safety Teleport Check
+	if global_position.y < -5.0:
+		global_position = Vector3(0, 1.5, 8.0)
+		velocity = Vector3.ZERO
+		print("[OASIS Player] Teleported back to ground plaza safety spawn.")
+
 # Phantom Camera DeLorean Cinematic Transition
 func spawn_delorean_with_cinematic_camera() -> void:
 	var spawn_pos = camera.global_position - (camera.global_transform.basis.z * 4.5)
