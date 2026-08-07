@@ -2,14 +2,14 @@
 Clear-Host
 Write-Host "=======================================================================" -ForegroundColor Cyan
 Write-Host "   WELCOME TO THE OASIS - READY PLAYER ONE DESKTOP SHOWCASE DEMO" -ForegroundColor Yellow
-Write-Host "   Mode Bureau (Desktop 3D) - High Detail Models & Ground Physics" -ForegroundColor Green
+Write-Host "   Mode Bureau (Desktop 3D) - GDQuest Mannequin & High Detail Models" -ForegroundColor Green
 Write-Host "=======================================================================" -ForegroundColor Cyan
 Write-Host ""
 
 $ProjectDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
 Set-Location $ProjectDir
 
-Write-Host "[1/3] Terminating any existing Godot 4 processes to ensure clean restart..." -ForegroundColor Yellow
+Write-Host "[1/3] Terminating any existing Godot 4 processes..." -ForegroundColor Yellow
 Get-Process -Name "Godot4" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
 Start-Sleep -Seconds 1
 
@@ -17,7 +17,9 @@ $GodotExe = Join-Path $ProjectDir "Godot4.exe"
 $ScenePath = "res://scenes/hub/oasis_master_rpo_movie.tscn"
 
 if (Test-Path $GodotExe) {
-    Write-Host "[2/3] Verifying master showcase scene..." -ForegroundColor Cyan
+    Write-Host "[2/3] Importing raw 3D assets & verifying master showcase scene..." -ForegroundColor Cyan
+    Start-Process $GodotExe -ArgumentList "--headless --editor --quit" -Wait
+    
     Write-Host "[3/3] Launching Godot 4 in Maximized Desktop Mode..." -ForegroundColor Green
     Start-Process $GodotExe -ArgumentList "--maximized `"$ScenePath`""
     
