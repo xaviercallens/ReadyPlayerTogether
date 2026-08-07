@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://pc_player_scene"]
+[gd_scene load_steps=15 format=3 uid="uid://pc_player_scene"]
 
 [ext_resource type="Script" path="res://scripts/player_vr/third_person_controller.gd" id="1_controller"]
 [ext_resource type="PackedScene" uid="uid://scene_navigator_ui" path="res://scenes/ui/scene_navigator.tscn" id="2_navigator"]
@@ -25,10 +25,6 @@ emission_energy_multiplier = 5.0
 [sub_resource type="StandardMaterial3D" id="Mat_SkinFace"]
 albedo_color = Color(0.9, 0.75, 0.65, 1)
 
-[sub_resource type="StandardMaterial3D" id="Mat_HairParzival"]
-albedo_color = Color(0.8, 0.7, 0.3, 1)
-
-# Body Meshes
 [sub_resource type="CapsuleMesh" id="Mesh_Torso"]
 material = SubResource("Mat_ArmorSuit")
 radius = 0.32
@@ -76,7 +72,6 @@ shape = SubResource("CapsuleShape3D_player")
 
 [node name="MeshPivot" type="Node3D" parent="."]
 
-# Articulated Humanoid Avatar Frame
 [node name="Torso" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 mesh = SubResource("Mesh_Torso")

@@ -10,8 +10,7 @@ def write_file(filepath, content):
 # ==============================================================================
 # 1. HIGH DETAIL DELOREAN TIME MACHINE (scenes/vehicles/delorean_car.tscn)
 # ==============================================================================
-DELOREAN_TSCN = """
-[gd_scene load_steps=18 format=3 uid="uid://delorean_car_scene"]
+DELOREAN_TSCN = """[gd_scene load_steps=18 format=3 uid="uid://delorean_car_scene"]
 
 [ext_resource type="Script" path="res://scripts/vehicles/delorean_car.gd" id="1_script"]
 
@@ -57,7 +56,6 @@ emission_enabled = true
 emission = Color(0.95, 0.98, 1.0, 1)
 emission_energy_multiplier = 6.0
 
-# Meshes
 [sub_resource type="BoxMesh" id="Mesh_LowerBody"]
 material = SubResource("Mat_StainlessSteel")
 size = Vector3(2.1, 0.5, 4.4)
@@ -119,7 +117,6 @@ mesh = SubResource("Mesh_FrontBumper")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 1.4)
 mesh = SubResource("Mesh_RearDeck")
 
-# Twin Rear Flux Thrusters
 [node name="FluxThrusterLeft" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.6, 0.85, 2.05)
 mesh = SubResource("Mesh_FluxThruster")
@@ -128,7 +125,6 @@ mesh = SubResource("Mesh_FluxThruster")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.6, 0.85, 2.05)
 mesh = SubResource("Mesh_FluxThruster")
 
-# Headlights & Taillights
 [node name="HeadlightLeft" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.45, -2.3)
 light_color = Color(0.95, 0.98, 1.0, 1)
@@ -147,7 +143,6 @@ light_color = Color(1.0, 0.1, 0.1, 1)
 light_energy = 4.0
 omni_range = 5.0
 
-# 4 Detailed Wheels (Tire + Chrome Rim)
 [node name="WheelFL" type="Node3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.1, 0.42, -1.4)
 
@@ -203,8 +198,7 @@ outline_size = 8
 # ==============================================================================
 # 2. HIGH DETAIL PLAYABLE PARZIVAL AVATAR (scenes/player_vr/pc_player.tscn)
 # ==============================================================================
-PARZIVAL_PLAYER_TSCN = """
-[gd_scene load_steps=18 format=3 uid="uid://pc_player_scene"]
+PARZIVAL_PLAYER_TSCN = """[gd_scene load_steps=15 format=3 uid="uid://pc_player_scene"]
 
 [ext_resource type="Script" path="res://scripts/player_vr/third_person_controller.gd" id="1_controller"]
 [ext_resource type="PackedScene" uid="uid://scene_navigator_ui" path="res://scenes/ui/scene_navigator.tscn" id="2_navigator"]
@@ -231,10 +225,6 @@ emission_energy_multiplier = 5.0
 [sub_resource type="StandardMaterial3D" id="Mat_SkinFace"]
 albedo_color = Color(0.9, 0.75, 0.65, 1)
 
-[sub_resource type="StandardMaterial3D" id="Mat_HairParzival"]
-albedo_color = Color(0.8, 0.7, 0.3, 1)
-
-# Body Meshes
 [sub_resource type="CapsuleMesh" id="Mesh_Torso"]
 material = SubResource("Mat_ArmorSuit")
 radius = 0.32
@@ -282,7 +272,6 @@ shape = SubResource("CapsuleShape3D_player")
 
 [node name="MeshPivot" type="Node3D" parent="."]
 
-# Articulated Humanoid Avatar Frame
 [node name="Torso" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 mesh = SubResource("Mesh_Torso")
@@ -343,8 +332,7 @@ near = 0.05
 # ==============================================================================
 # 3. HIGH DETAIL GUNDAM RX-78-2 MECH (scenes/characters/gundam_mech.tscn)
 # ==============================================================================
-GUNDAM_MECH_TSCN = """
-[gd_scene load_steps=18 format=3 uid="uid://gundam_mech_scene"]
+GUNDAM_MECH_TSCN = """[gd_scene load_steps=16 format=3 uid="uid://gundam_mech_scene"]
 
 [ext_resource type="Script" path="res://scripts/characters/gundam_mech.gd" id="1_script"]
 
@@ -375,7 +363,6 @@ emission_enabled = true
 emission = Color(0.0, 1.0, 0.4, 1)
 emission_energy_multiplier = 6.0
 
-# Geometry
 [sub_resource type="BoxMesh" id="Mesh_Chest"]
 material = SubResource("Mat_BlueChest")
 size = Vector3(2.4, 2.6, 1.6)
@@ -485,4 +472,4 @@ write_file(os.path.join(BASE_DIR, "scenes/vehicles/delorean_car.tscn"), DELOREAN
 write_file(os.path.join(BASE_DIR, "scenes/player_vr/pc_player.tscn"), PARZIVAL_PLAYER_TSCN)
 write_file(os.path.join(BASE_DIR, "scenes/characters/gundam_mech.tscn"), GUNDAM_MECH_TSCN)
 
-print("High-detail 3D models generated for DeLorean, Parzival, and Gundam RX-78!")
+print("Clean text format .tscn models generated!")
