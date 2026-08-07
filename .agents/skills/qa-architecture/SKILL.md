@@ -5,21 +5,42 @@ description: Trigger the Gemini 3.1 Pro background agent to conduct Code Reviews
 
 # QA & Architecture Skill (Gemini 3.1 Pro)
 
-This skill interfaces with the local FastAPI server (`http://127.0.0.1:8007`) that acts as a proxy to the GCP Vertex AI Gemini 3.1 Pro model.
+This skill uses the **Unified OASIS AMCP Server** (`http://127.0.0.1:8005`) which hosts both the game mesh endpoints and the QA/Architecture endpoints. The QA agent runs as a background worker within the same server process, powered by the real Gemini API via `google-genai`.
+
+## Prerequisites
+
+- `GEMINI_API_KEY` environment variable must be set (or in `.env` file).
+- Server running: `python Server_AI/agent_mesh/server.py`
 
 ## Usage
 
-When the user asks to "review", "test", or "improve" a script, you should:
+When the user asks to "review", "test", or "improve" a script:
 
-1. Identify the target script path.
-2. Send an HTTP POST request (via a curl command or python script) to the local QA server.
+1. Identify the target script path (relative to project root).
+2. Send an HTTP POST request to the unified server's QA endpoints.
 
-### Available Endpoints:
-- `/api/qa/review`: Returns a strict Godot 4 Code Review.
-- `/api/qa/unittest`: Generates a GUT (Godot Unit Test) framework file.
-- `/api/qa/improve`: Suggests architectural patterns (State Machines, Component architecture).
+### Available Endpoints (all on port 8005):
 
-### Example (Curl):
+| Endpoint | Purpose |
+|----------|---------|
+| `POST /api/qa/review` | Strict Godot 4 Code Review |
+| `POST /api/qa/unittest` | GUT test file generation |
+| `POST /api/qa/improve` | Architecture & pattern suggestions |
+| `GET /api/vram/status` | Real-time GPU VRAM monitoring |
+
+### Example:
 ```bash
-curl -X POST "http://127.0.0.1:8007/api/qa/improve" -H "Content-Type: application/json" -d '{"file_path":"scripts/player/third_person_controller.gd"}'
+# Code review
+curl -X POST "http://127.0.0.1:8005/api/qa/review" \
+  -H "Content-Type: application/json" \
+  -d '{"file_path":"scripts/player/third_person_controller.gd"}'
+
+# VRAM status
+curl "http://127.0.0.1:8005/api/vram/status"
 ```
+
+## Agent Behavior
+
+- When the Gemini API key is configured, the agent sends real prompts to the Gemini model.
+- When offline (no API key), it returns a clear message indicating the agent is unavailable.
+- Results are returned asynchronously through a background worker queue.

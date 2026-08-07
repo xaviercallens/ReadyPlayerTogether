@@ -19,7 +19,7 @@ class OllamaDialogueAgent:
             "stream": False
         }
         try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
+            async with httpx.AsyncClient(timeout=30.0) as client:
                 res = await client.post(f"{self.ollama_url}/api/chat", json=payload)
                 if res.status_code == 200:
                     data = res.json()

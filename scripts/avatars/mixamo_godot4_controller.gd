@@ -1,71 +1,35 @@
-# Godot 4.3+ Mixamo & Ready Player Me Humanoid Retargeter & AnimationTree Controller
+# Mixamo to Godot 4 Animation Controller
+# Plays named Mixamo actions on a target Skeleton3D / AnimationPlayer.
 class_name MixamoGodot4Controller
-extends Node3D
+extends Node
 
-signal animation_state_changed(new_state: String)
-
-@export var avatar_skeleton: Skeleton3D
-@export var animation_player: AnimationPlayer
-@export var animation_tree: AnimationTree
-
-# Bone Mapping Dictionary (Mixamo -> Godot 4 Humanoid)
-const BONE_MAP: Dictionary = {
-	"mixamorig:Hips": "Hips",
-	"mixamorig:Spine": "Spine",
-	"mixamorig:Spine1": "Chest",
-	"mixamorig:Spine2": "UpperChest",
-	"mixamorig:Neck": "Neck",
-	"mixamorig:Head": "Head",
-	"mixamorig:LeftShoulder": "LeftShoulder",
-	"mixamorig:LeftArm": "LeftUpperArm",
-	"mixamorig:LeftForeArm": "LeftLowerArm",
-	"mixamorig:LeftHand": "LeftHand",
-	"mixamorig:RightShoulder": "RightShoulder",
-	"mixamorig:RightArm": "RightUpperArm",
-	"mixamorig:RightForeArm": "RightLowerArm",
-	"mixamorig:RightHand": "RightHand",
-	"mixamorig:LeftUpLeg": "LeftUpperLeg",
-	"mixamorig:LeftLeg": "LeftLowerLeg",
-	"mixamorig:LeftFoot": "LeftFoot",
-	"mixamorig:RightUpLeg": "RightUpperLeg",
-	"mixamorig:RightLeg": "RightLowerLeg",
-	"mixamorig:RightFoot": "RightFoot"
-}
+var _anim_player: AnimationPlayer
+var _current_action: String = ""
 
 func _ready() -> void:
-	if avatar_skeleton:
-		remap_mixamo_bones()
-	setup_animation_tree()
+	# Try to find the AnimationPlayer on the parent or sibling node
+	var parent := get_parent()
+	if parent:
+		_anim_player = parent.get_node_or_null("AnimationPlayer") as AnimationPlayer
+		if _anim_player == null:
+			# Try deeper search
+			var players := parent.find_children("*", "AnimationPlayer", true, false)
+			if players.size() > 0:
+				_anim_player = players[0] as AnimationPlayer
 
-func remap_mixamo_bones() -> void:
-	if not avatar_skeleton:
+func play_action(action_name: String) -> void:
+	if action_name == _current_action:
 		return
-		
-	var remapped_count = 0
-	for mixamo_name in BONE_MAP.keys():
-		var bone_idx = avatar_skeleton.find_bone(mixamo_name)
-		if bone_idx != -1:
-			var target_godot_name = BONE_MAP[mixamo_name]
-			# Renommer dynamiquement pour correspondre au SkeletonProfileHumanoid de Godot 4
-			avatar_skeleton.set_bone_name(bone_idx, target_godot_name)
-			remapped_count += 1
-			
-	print("[MixamoGodot4Controller] Retargeting effectue : ", remapped_count, " os réalignés pour Godot 4.")
+	_current_action = action_name
 
-func setup_animation_tree() -> void:
-	if not animation_player:
+	if _anim_player == null:
 		return
-		
-	if not animation_tree:
-		animation_tree = AnimationTree.new()
-		add_child(animation_tree)
-		
-	animation_tree.anim_player = animation_tree.get_path_to(animation_player)
-	animation_tree.active = true
-	print("[MixamoGodot4Controller] AnimationTree connecte avec succes à AnimationPlayer.")
+	if _anim_player.has_animation(action_name):
+		_anim_player.play(action_name)
+	else:
+		print("[MixamoController] Animation '", action_name, "' not found. Available: ", _anim_player.get_animation_list())
 
-func play_action(anim_name: String) -> void:
-	if animation_player and animation_player.has_animation(anim_name):
-		animation_player.play(anim_name)
-		animation_state_changed.emit(anim_name)
-		print("[MixamoGodot4Controller] Lecture animation Mixamo: ", anim_name)
+func stop_action() -> void:
+	_current_action = ""
+	if _anim_player:
+		_anim_player.stop()
