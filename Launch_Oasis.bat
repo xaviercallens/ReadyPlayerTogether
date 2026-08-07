@@ -1,3 +1,6 @@
 @echo off
-echo Starting Projet OASIS (Desktop Mode - No VR)...
-"C:\Users\Utilisateur\AppData\Local\Microsoft\WinGet\Packages\GodotEngine.GodotEngine_Microsoft.Winget.Source_8wekyb3d8bbwe\Godot_v4.7.1-stable_win64.exe" --path "D:\xdev\Oasis"
+echo ===================================================
+echo  Lancement du Projet OASIS (Mode Bureau Godot 4)
+echo ===================================================
+cd /d "%~dp0"
+start Godot4.exe --path "%~dp0"
