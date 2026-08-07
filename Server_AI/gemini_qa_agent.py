@@ -106,13 +106,16 @@ class QAskillsWorker:
         self.running = True
         print("[QAskillsWorker] Background Worker started (Gemini API)...")
         while self.running:
-            task = await self.queue.get()
             try:
-                await self._handle_task(task)
-            except Exception as e:
-                print(f"[QAskillsWorker] Error processing task: {e}")
-            finally:
-                self.queue.task_done()
+                task = await asyncio.wait_for(self.queue.get(), timeout=0.2)
+                try:
+                    await self._handle_task(task)
+                except Exception as e:
+                    print(f"[QAskillsWorker] Error processing task: {e}")
+                finally:
+                    self.queue.task_done()
+            except asyncio.TimeoutError:
+                continue
 
     async def stop(self):
         self.running = False

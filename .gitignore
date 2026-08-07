@@ -23,6 +23,7 @@ Thumbs.db
 # Executables & Logs
 Godot4.exe
 *.log
+.coverage
 
 # Generated / External content (not part of the Godot project)
 GoogleWorld/

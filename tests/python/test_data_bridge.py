@@ -1,23 +1,31 @@
-import requests
-import unittest
+import pytest
+from fastapi.testclient import TestClient
+from Server_AI.oasis_data_bridge_server import app
 
-class TestOasisDataBridge(unittest.TestCase):
-    BASE_URL = "http://127.0.0.1:8000"
+client = TestClient(app)
 
-    def test_bridge_endpoints(self):
-        # 1. Mesh Endpoint
-        mesh_res = requests.post(f"{self.BASE_URL}/api/bridge/mesh", json={"prompt": "cyberpunk_hoverboard"})
-        self.assertEqual(mesh_res.status_code, 200)
-        self.assertIn("res_path", mesh_res.json())
+def test_bridge_status():
+    res = client.get("/api/bridge/status")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "online"
+    assert "gpu" in data
 
-        # 2. PBR Textures Endpoint
-        pbr_res = requests.post(f"{self.BASE_URL}/api/bridge/pbr", json={"asset_name": "hoverboard"})
-        self.assertEqual(pbr_res.status_code, 200)
+def test_bridge_mesh():
+    res = client.post("/api/bridge/mesh", json={"prompt": "cyberpunk_hoverboard"})
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "success"
+    assert "res_path" in data
 
-        # 3. Skybox Endpoint
-        sky_res = requests.post(f"{self.BASE_URL}/api/bridge/skybox", json={"prompt": "Tokyo skyline"})
-        self.assertEqual(sky_res.status_code, 200)
+def test_bridge_pbr():
+    res = client.post("/api/bridge/pbr", json={"asset_name": "hoverboard"})
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "success"
 
-if __name__ == "__main__":
-    print("[TEST DATA BRIDGE] Running integration tests...")
-    unittest.main()
+def test_bridge_skybox():
+    res = client.post("/api/bridge/skybox", json={"prompt": "Tokyo skyline"})
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "success"

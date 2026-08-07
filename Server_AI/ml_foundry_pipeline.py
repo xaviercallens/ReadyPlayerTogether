@@ -9,7 +9,9 @@ def run_sf3d_triposr_pipeline(prompt: str, output_dir: str = r"D:\xdev\Oasis\ass
     output_glb = os.path.join(output_dir, f"{safe_filename}.glb")
     
     print(f"[ML FOUNDRY] Starting Stable Fast 3D / TripoSR pipeline for: '{prompt}'")
-    time.sleep(0.5) # Fast 3D mesh generation simulation
+    time.sleep(0.1) # Fast 3D mesh generation simulation
+    with open(output_glb, "wb") as f:
+        f.write(b"GLTF_SIMULATED_HEADER")
     
     # Save asset metadata json
     meta_path = os.path.join(output_dir, f"{safe_filename}.json")
