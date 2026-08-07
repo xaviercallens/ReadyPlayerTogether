@@ -17,7 +17,7 @@ color 0A
 cls
 echo =======================================================================
 echo    WELCOME TO THE OASIS - READY PLAYER ONE DESKTOP SHOWCASE DEMO
-echo    Mode Bureau (Desktop 3D) - High Detail Models & Ground Physics
+echo    Mode Bureau (Desktop 3D) - High Detail Models and Ground Physics
 echo =======================================================================
 echo.
 
@@ -26,7 +26,7 @@ cd /d "%~dp0"
 
 echo [1/3] Closing any previously running Godot 4 instances...
 taskkill /F /IM Godot4.exe /T 2>nul
-timeout /t 1 /nobreak >nul
+ping 127.0.0.1 -n 2 >nul
 
 echo [2/3] Verifying master showcase scene configuration...
 if not exist "scenes\\hub\\oasis_master_rpo_movie.tscn" (
@@ -42,11 +42,11 @@ echo =======================================================================
 echo  SUCCESS! OASIS Demo restarted cleanly.
 echo.
 echo  Controls Summary:
-echo  - WASD + Mouse Orbit : Move Parzival & Look around
+echo  - WASD + Mouse Orbit : Move Parzival and Look around
 echo  - Space / Gamepad A  : Jump
 echo  - F / Gamepad Y      : Spawn DeLorean Time Machine with camera zoom!
 echo  - Shift + F          : Teleport Search Menu
-echo  - L / Tab            : Showroom Gallery & Command Menu
+echo  - L / Tab            : Showroom Gallery and Command Menu
 echo  - 1 to 9             : Instant Teleport Demos
 echo =======================================================================
 echo.
