@@ -1,4 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://pc_player_scene"]
+import os
+
+BASE_DIR = r"D:\xdev\Oasis"
+
+def write_file(filepath, content):
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content.strip())
+
+# ==============================================================================
+# PARZIVAL GDQUEST MANNEQUIN PLAYER (scenes/player_vr/pc_player.tscn)
+# ==============================================================================
+GDQUEST_PARZIVAL_PLAYER_TSCN = """[gd_scene load_steps=10 format=3 uid="uid://pc_player_scene"]
 
 [ext_resource type="Script" path="res://scripts/player_vr/third_person_controller.gd" id="1_controller"]
 [ext_resource type="PackedScene" uid="uid://scene_navigator_ui" path="res://scenes/ui/scene_navigator.tscn" id="2_navigator"]
@@ -66,3 +78,8 @@ near = 0.05
 [node name="SceneNavigator" parent="." instance=ExtResource("2_navigator")]
 
 [node name="CommandMenu" parent="." instance=ExtResource("3_command_menu")]
+"""
+
+write_file(os.path.join(BASE_DIR, "scenes/player_vr/pc_player.tscn"), GDQUEST_PARZIVAL_PLAYER_TSCN)
+
+print("GDQuest Mannequin 3D GLB model integrated for Parzival player character!")
