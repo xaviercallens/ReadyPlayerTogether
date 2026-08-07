@@ -21,5 +21,21 @@ The entire backend orchestration behavior is controlled via the `OASIS_ENV` envi
 - **RL Agent**: Training data is streamed to a distributed **Ray Cluster** on GCP.
 - **Server**: FastAPI binds to `0.0.0.0:8080`, ready to be containerized via Docker and deployed to **Google Cloud Run**.
 
+---
+
+## 🌍 The Spatial World Pipeline: Builder vs. Dreamer
+
+To go beyond static modeling, the OASIS utilizes two cutting-edge Spatial AI paradigms, deeply integrated into Godot 4:
+
+### 🛠️ The Builder (Genie Sim / Spatial World Models)
+**Role**: Generating persistent 3D physical environments (polygons, collisions, textures) offline.
+- **Workflow**: A local Python script queries Genie Sim (or equivalent Spatial World Model) with a text prompt (e.g., "Cyberpunk Arcade Room").
+- **Godot Integration**: The model outputs a `.gltf` or `.usd` file. Godot 4's `GLTFDocument` dynamically imports this geometry at runtime (using `RuntimeAssetLoader.gd`), granting the player full VR physical interactions (walking, jumping, grabbing).
+
+### 🌌 The Dreamer (Matrix-Game 2.0 / Playable Video)
+**Role**: Hallucinating interactive game worlds in real-time at 25 FPS (no polygons, pure neural rendering).
+- **Workflow**: Matrix-Game 2.0 runs as a FastAPI WebSocket server on the RTX 2070 (isolated from Godot).
+- **Godot Integration**: The Godot VR client sends user inputs (`w, a, s, d`) via WebSocket to the Python server. The server infers the next frame and sends back a JPEG byte array. Godot paints this image onto an `ImageTexture` applied to a 3D Arcade Cabinet or a Magical Portal (`ArcadePortalClient.gd`). This prevents the RTX 2070 from crashing, by limiting neural rendering to a specific 2D surface within the 3D VR world.
+
 ## 🔌 Godot 4 Integration
 Godot 4 (`res://scripts/ai/agent_mesh_bridge.gd`) remains completely agnostic to the environment. It always publishes events to the FastAPI Mesh Orchestrator, which acts as the intelligent router.

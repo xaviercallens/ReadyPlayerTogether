@@ -1,143 +1,171 @@
 import os
+import sys
 
-BASE_DIR = r"D:\xdev\Oasis"
+def build_hybrid_spatial_engine():
+    print("=== Building OASIS Hybrid Spatial Engine (Genie Sim + Matrix-Game) ===")
+    
+    os.makedirs("Server_AI", exist_ok=True)
+    os.makedirs("scripts/ai", exist_ok=True)
+    os.makedirs("scripts/ui", exist_ok=True)
 
-def write_file(filepath, content):
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(content.strip())
+    # 1. Matrix-Game 2.0 FastAPI WebSocket Streamer (Python)
+    matrix_streamer_py = """# Matrix-Game 2.0 WebSocket Streamer (The Dreamer)
+# Simulates interactive 25 FPS playable video hallucinated by AI on the RTX 2070.
 
-# ==============================================================================
-# 1. MATRIX-GAME STREAMING SERVER (Server_AI/matrix_game_streamer.py)
-# ==============================================================================
-STREAMER_PY = """
 import asyncio
 import time
-import json
-import uvicorn
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+import uvicorn
+import cv2
+import numpy as np
 
-app = FastAPI(
-    title="OASIS Matrix-Game 2.0 Streaming Server",
-    description="Real-time AI Video & Dimension Streamer for Godot Virtual Screens & Portals",
-    version="2.0.0"
-)
+app = FastAPI(title="Matrix-Game Dream Streamer")
 
-@app.get("/")
-def root():
-    return {
-        "server": "Matrix-Game 2.0 Streamer",
-        "status": "active",
-        "target_fps": 25,
-        "gpu": "NVIDIA GeForce RTX 2070"
-    }
+def generate_noise_frame(width=320, height=240, text="MATRIX GAME 2.0"):
+    \"\"\"Simule une frame d'IA générative (bruit + texte de debug)\"\"\"
+    frame = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)
+    # Ajouter un effet cyberpunk
+    frame[:, :, 1] = 0 # Pas de vert, que du violet/magenta
+    cv2.putText(frame, text, (20, height // 2), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+    
+    # Encode as JPEG
+    _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 70])
+    return buffer.tobytes()
 
-@app.websocket("/ws/stream")
-async def websocket_stream(websocket: WebSocket):
+@app.websocket("/ws/dream_portal")
+async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    print("[MATRIX STREAMER] Godot Virtual Portal connected!")
-    frame_count = 0
+    print("[Matrix-Game] Portal connection established. Dreaming at 25 FPS...")
+    
     try:
         while True:
-            frame_count += 1
-            # Send frame metadata & simulation packet to Godot
-            packet = {
-                "frame": frame_count,
-                "timestamp": time.time(),
-                "dimension": "Cyberpunk Neon Portal",
-                "status": "streaming"
-            }
-            await websocket.send_text(json.dumps(packet))
-            await asyncio.sleep(1.0 / 25.0) # 25 FPS Stream
+            # 1. Attendre les inputs du joueur (ex: W, A, S, D) depuis Godot
+            try:
+                data = await asyncio.wait_for(websocket.receive_text(), timeout=0.04) # ~25fps non bloquant
+                print(f"[Matrix-Game] Player Input: {data}")
+            except asyncio.TimeoutError:
+                pass # Continue generating frames even if no input
+                
+            # 2. L'IA génère la prochaine frame (Simulation)
+            # Dans un vrai scénario, Matrix-Game prend `data` et infère la vidéo
+            jpeg_bytes = generate_noise_frame(text=f"DREAMING... {int(time.time()*10)%100}")
+            
+            # 3. Envoyer la frame à Godot
+            await websocket.send_bytes(jpeg_bytes)
+            
+            await asyncio.sleep(0.04) # Lock à ~25 FPS pour épargner la RTX 2070
     except WebSocketDisconnect:
-        print("[MATRIX STREAMER] Godot Virtual Portal disconnected.")
+        print("[Matrix-Game] Player disconnected from the dream portal.")
 
 if __name__ == "__main__":
-    print("[MATRIX STREAMER] Starting server on ws://127.0.0.1:8001/ws/stream ...")
-    uvicorn.run(app, host="127.0.0.1", port=8001)
+    print("[Matrix-Game Streamer] Ready on ws://127.0.0.1:8006/ws/dream_portal")
+    uvicorn.run(app, host="127.0.0.1", port=8006)
 """
+    with open("Server_AI/matrix_game_streamer.py", "w", encoding="utf-8") as f:
+        f.write(matrix_streamer_py)
+    print("-> Wrote Server_AI/matrix_game_streamer.py")
 
-write_file(os.path.join(BASE_DIR, "Server_AI/matrix_game_streamer.py"), STREAMER_PY)
-
-# ==============================================================================
-# 2. VIRTUAL PORTAL SCREEN SCRIPT (scripts/ui/virtual_portal_screen.gd)
-# ==============================================================================
-PORTAL_SCREEN_GD = """
+    # 2. Genie Sim GLTF Runtime Asset Loader (GDScript)
+    runtime_loader_gd = """# Genie Sim GLTF Runtime Importer (The Builder)
+# Natively imports physical .gltf files generated by Genie Sim without freezing Godot.
+class_name RuntimeAssetLoader
 extends Node3D
 
-# ==============================================================================
-# PROJET OASIS - Virtual Portal Screen (Matrix-Game 2.0 Receiver)
-# Displays dynamic AI streamed dimensions inside the 3D OASIS world.
-# ==============================================================================
+signal gltf_loaded(node: Node3D)
+signal load_failed(error: String)
 
-@onready var screen_label: Label3D = $ScreenMesh/Label3D
-var time_passed: float = 0.0
+func load_genie_sim_environment(file_path: String) -> void:
+    print("[RuntimeAssetLoader] Importation de la generation Genie Sim: ", file_path)
+    
+    var gltf_doc = GLTFDocument.new()
+    var gltf_state = GLTFState.new()
+    
+    # Note: L'importation runtime de gros fichiers peut créer un mini-lag.
+    # Pour un projet VR, il est recommandé de l'exécuter dans un WorkerThreadPool.
+    var error = gltf_doc.append_from_file(file_path, gltf_state)
+    
+    if error != OK:
+        load_failed.emit("Erreur de lecture du fichier GLTF: " + str(error))
+        return
+        
+    var generated_node = gltf_doc.generate_scene(gltf_state)
+    if generated_node:
+        add_child(generated_node)
+        print("[RuntimeAssetLoader] Environnement GLTF integre a la scene avec succes!")
+        gltf_loaded.emit(generated_node)
+    else:
+        load_failed.emit("Erreur lors de la generation de la scene 3D.")
+"""
+    with open("scripts/ai/runtime_asset_loader.gd", "w", encoding="utf-8") as f:
+        f.write(runtime_loader_gd)
+    print("-> Wrote scripts/ai/runtime_asset_loader.gd")
+
+    # 3. Matrix-Game Arcade Portal Client (GDScript)
+    arcade_portal_gd = """# Matrix-Game Arcade Portal WebSocket Client (The Dreamer)
+# Streams playable video onto a 3D Mesh (Arcade Screen or Portal) in VR.
+class_name ArcadePortalClient
+extends MeshInstance3D
+
+@export var websocket_url: String = "ws://127.0.0.1:8006/ws/dream_portal"
+
+var socket := WebSocketPeer.new()
+var image := Image.new()
+var image_texture := ImageTexture.new()
+
+func _ready() -> void:
+    # Appliquer la texture dynamique au materiel du Mesh (ex: un ecran d'arcade)
+    var mat = StandardMaterial3D.new()
+    mat.albedo_texture = image_texture
+    mat.emission_enabled = true
+    mat.emission_texture = image_texture
+    mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+    set_surface_override_material(0, mat)
+    
+    var err = socket.connect_to_url(websocket_url)
+    if err == OK:
+        print("[ArcadePortal] Connecte au reve Matrix-Game sur ", websocket_url)
+    else:
+        print("[ArcadePortal] Echec de la connexion WebSocket.")
 
 func _process(delta: float) -> void:
-	time_passed += delta
-	# Pulsing portal frame effect
-	$ScreenMesh.position.y = 2.2 + sin(time_passed * 2.0) * 0.05
+    socket.poll()
+    var state = socket.get_ready_state()
+    
+    if state == WebSocketPeer.STATE_OPEN:
+        # Lire les frames video entrantes
+        while socket.get_available_packet_count() > 0:
+            var packet = socket.get_packet()
+            _update_portal_texture(packet)
+            
+        # Envoyer les inputs du joueur (WASD)
+        _send_player_inputs()
+        
+    elif state == WebSocketPeer.STATE_CLOSED:
+        pass # Handle reconnect if necessary
+
+func _update_portal_texture(jpeg_bytes: PackedByteArray) -> void:
+    var err = image.load_jpg_from_buffer(jpeg_bytes)
+    if err == OK:
+        if image_texture.get_size() == Vector2.ZERO:
+            image_texture.set_image(image)
+        else:
+            image_texture.update(image)
+
+func _send_player_inputs() -> void:
+    var input_str = ""
+    if Input.is_action_pressed("ui_up"): input_str += "W"
+    if Input.is_action_pressed("ui_down"): input_str += "S"
+    if Input.is_action_pressed("ui_left"): input_str += "A"
+    if Input.is_action_pressed("ui_right"): input_str += "D"
+    
+    if input_str != "":
+        socket.put_packet(input_str.to_utf8_buffer())
 """
+    with open("scripts/ui/arcade_portal_client.gd", "w", encoding="utf-8") as f:
+        f.write(arcade_portal_gd)
+    print("-> Wrote scripts/ui/arcade_portal_client.gd")
 
-PORTAL_SCREEN_TSCN = """
-[gd_scene load_steps=5 format=3 uid="uid://virtual_portal_screen_scene"]
+    print("\n[SUCCESS] Hybrid Spatial Engine modules built successfully.")
 
-[ext_resource type="Script" path="res://scripts/ui/virtual_portal_screen.gd" id="1_script"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_PortalScreen"]
-albedo_color = Color(0.0, 0.9, 1.0, 1)
-metallic = 0.9
-roughness = 0.1
-emission_enabled = true
-emission = Color(0.0, 0.9, 1.0, 1)
-emission_energy_multiplier = 4.0
-
-[sub_resource type="BoxMesh" id="Mesh_Screen"]
-material = SubResource("Mat_PortalScreen")
-size = Vector3(4.0, 2.5, 0.1)
-
-[node name="VirtualPortalScreen" type="Node3D"]
-script = ExtResource("1_script")
-
-[node name="ScreenMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
-mesh = SubResource("Mesh_Screen")
-
-[node name="Label3D" type="Label3D" parent="ScreenMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.08)
-billboard = 1
-pixel_size = 0.015
-text = "MATRIX-GAME 2.0 VIRTUAL PORTAL
-[Dynamic AI World Streaming @ 25 FPS]"
-font_size = 38
-outline_size = 8
-"""
-
-write_file(os.path.join(BASE_DIR, "scripts/ui/virtual_portal_screen.gd"), PORTAL_SCREEN_GD)
-write_file(os.path.join(BASE_DIR, "scenes/ui/virtual_portal_screen.tscn"), PORTAL_SCREEN_TSCN)
-
-# ==============================================================================
-# 3. HYBRID ENGINE MASTER GUIDE (.antigravity/hybrid_engine_guide.md)
-# ==============================================================================
-HYBRID_GUIDE_MD = """
-# 🚀 OASIS Hybrid Architecture Engine (Genie Sim + Matrix-Game 2.0 + Godot 4)
-
-Ce document détaille l'architecture hybride du Projet OASIS.
-
----
-
-### 🌐 Les 3 Composants de la Stratégie Hybride :
-
-1. **La Base (Godot 4)** :
-   - Moteur physique, collisions, saut, ramassage de la Clé de Cuivre et contrôles VR/PC.
-
-2. **L'Architecte (Genie Sim GLTF)** :
-   - Modèle 3D persistant généré en arrière-plan et chargé dynamiquement par `GLTFDocument`.
-
-3. **Le Rêveur (Matrix-Game 2.0 Streamer)** :
-   - Serveur WebSocket Python (`Server_AI/matrix_game_streamer.py`) diffusant un flux interactif 25 FPS affiché sur les **Écrans / Portails Virtuels** ([scenes/ui/virtual_portal_screen.tscn](file:///D:/xdev/Oasis/scenes/ui/virtual_portal_screen.tscn)).
-"""
-
-write_file(os.path.join(BASE_DIR, ".antigravity/hybrid_engine_guide.md"), HYBRID_GUIDE_MD)
-
-print("OASIS Hybrid Architecture Engine components generated successfully!")
+if __name__ == "__main__":
+    build_hybrid_spatial_engine()
