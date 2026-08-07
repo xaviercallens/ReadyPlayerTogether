@@ -19,3 +19,8 @@ env/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Executables & Logs
+Godot4.exe
+*.log
+
