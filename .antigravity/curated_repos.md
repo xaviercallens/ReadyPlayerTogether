@@ -22,10 +22,26 @@ This document tracks the best open-source repositories integrated into **Projet 
 - **Repository**: [bogdanMerkulow/MixamoToGodot](https://github.com/bogdanMerkulow/MixamoToGodot)
 - **Role**: Automated Blender/Python pipeline converting Mixamo animations (walk, run, dance, combat) with Root Motion directly into Godot 4 `AnimationTree`.
 
-## 6. Godot XR The Dojo & Ready Player One Assets
-- **Repositories**: [Godot-Dojo/Deprecated-Godot-XR-The-Dojo](https://github.com/Godot-Dojo/Deprecated-Godot-XR-The-Dojo) & [Godot-Ready-Player-One](https://github.com/Godot-Ready-Player-One)
-- **Role**: VR combat mechanics, physics interactions, and iconic lore artifacts (Keys, Zemeckis Cube, DeLorean).
+## 6. Godot RL Agents (Reinforcement Learning for NPCs & Vehicles)
+- **Repository**: [godotengine/godot-rl-agents](https://github.com/godotengine/godot-rl-agents)
+- **Role**: Reinforcement learning framework (PyTorch/Ray) for training autonomous DeLorean vehicles and mechs in the Copper Key track by trial and error.
 
-## 7. ReadyPlayerTogether (Our Open-Source Project)
+## 7. Ollama Local LLMs (4-bit Quantized Local NPC Brain)
+- **Repositories**: [ollama/ollama](https://github.com/ollama/ollama) & [Manoj-Make-Games/Godot-Ollama-Plugin](https://github.com/Manoj-Make-Games/Godot-Ollama-Plugin)
+- **Role**: Runs 4-bit Llama 3 / Mistral locally on RTX 2070 GPU (~4.5 GB VRAM), leaving plenty of memory for Godot 4 VR rendering.
+
+## 8. RVC Voice Cloning (Retrieval-based Voice Conversion)
+- **Repository**: [RVC-Project/Retrieval-based-Voice-Conversion-WebUI](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI)
+- **Role**: Deep learning voice conversion pipeline (Edge-TTS + RVC) giving Parzival, Art3mis, and Anorak iconic voices.
+
+## 9. ComfyUI PBR Material Foundry (VRAM-Efficient Textures)
+- **Repository**: [comfyanonymous/ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+- **Role**: Node-based Stable Diffusion API generating Albedo, Normal, and Roughness maps for neon cyberpunk surfaces.
+
+## 10. Agent Mesh Orchestrator (AMCP Asynchronous Protocol)
+- **Location**: `Server_AI/agent_mesh/` & `scripts/ai/agent_mesh_bridge.gd`
+- **Role**: Asynchronous event broker with VRAM Governor capping total GPU memory under 7.5 GB for RTX 2070.
+
+## 11. ReadyPlayerTogether (Our Open-Source Project)
 - **Repository**: [xaviercallens/ReadyPlayerTogether](https://github.com/xaviercallens/ReadyPlayerTogether)
 - **Role**: Main open-source collaborative project for father & son pair programming.
