@@ -42,6 +42,14 @@ This document tracks the best open-source repositories integrated into **Projet 
 - **Location**: `Server_AI/agent_mesh/` & `scripts/ai/agent_mesh_bridge.gd`
 - **Role**: Asynchronous event broker with VRAM Governor capping total GPU memory under 7.5 GB for RTX 2070.
 
-## 11. ReadyPlayerTogether (Our Open-Source Project)
+## 11. Third Person Controller & Desktop Fallback
+- **Repository**: [emirthab/third-person-controller](https://github.com/emirthab/third-person-controller)
+- **Role**: Desktop/Screen fallback mechanics with SpringArm3D to allow testing avatars and gameplay without wearing the VR headset constantly.
+
+## 12. Phantom Camera (Cinematics & Transitions)
+- **Repository**: [ramokz/phantom-camera](https://github.com/ramokz/phantom-camera)
+- **Role**: Dynamic, procedural camera control inspired by Unity Cinemachine, perfect for switching between VR first-person and desktop third-person testing modes.
+
+## 13. ReadyPlayerTogether (Our Open-Source Project)
 - **Repository**: [xaviercallens/ReadyPlayerTogether](https://github.com/xaviercallens/ReadyPlayerTogether)
 - **Role**: Main open-source collaborative project for father & son pair programming.

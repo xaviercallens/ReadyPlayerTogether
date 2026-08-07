@@ -1,206 +1,151 @@
 import os
+import sys
 
-BASE_DIR = r"D:\xdev\Oasis"
+def build_demo_features():
+    print("=== Building DeLorean Spawner & Third-Person Controller Demo ===")
+    
+    os.makedirs("scripts/player", exist_ok=True)
+    os.makedirs("scripts/vehicles", exist_ok=True)
+    os.makedirs("materials/shaders", exist_ok=True)
+    
+    # 1. Sci-Fi Construction Shader (Godot 4 Shader)
+    construction_shader = """// Ready Player One DeLorean Construction Shader
+shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx;
 
-def write_file(filepath, content):
-    os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(content.strip())
+uniform vec4 base_color : source_color = vec4(0.8, 0.8, 0.8, 1.0);
+uniform vec4 neon_color : source_color = vec4(0.0, 1.0, 1.0, 1.0);
+uniform float construction_progress : hint_range(0.0, 1.0) = 0.0;
+uniform float scanline_width : hint_range(0.0, 0.5) = 0.05;
+uniform float object_height = 2.0;
 
-# ==============================================================================
-# 1. EMIRTHAB THIRD PERSON CONTROLLER SCRIPT (scripts/player_vr/third_person_controller.gd)
-# ==============================================================================
-CONTROLLER_GD = """
+void fragment() {
+    // Local Y position (normalized roughly between 0 and 1)
+    float local_y = (VERTEX.y / object_height) + 0.5;
+    
+    // Check if the current pixel is below the construction line
+    if (local_y > construction_progress) {
+        discard; // Transparent / Not yet constructed
+    }
+    
+    // Glowing edge effect at the construction line
+    if (local_y > construction_progress - scanline_width) {
+        ALBEDO = neon_color.rgb;
+        EMISSION = neon_color.rgb * 3.0; // Glowing Neon
+    } else {
+        // Solid fully constructed car
+        ALBEDO = base_color.rgb;
+        EMISSION = vec3(0.0);
+    }
+}
+"""
+    with open("materials/shaders/scifi_construction.gdshader", "w", encoding="utf-8") as f:
+        f.write(construction_shader)
+    print("-> Wrote materials/shaders/scifi_construction.gdshader")
+
+    # 2. DeLorean Spawner Script (Action Button "F" or VR Trigger)
+    delorean_spawner_gd = """# DeLorean Sci-Fi Spawner for Projet OASIS
+class_name DeLoreanSpawner
+extends Node3D
+
+@export var delorean_scene: PackedScene
+@onready var camera = get_viewport().get_camera_3d()
+
+func _input(event: InputEvent) -> void:
+    # "spawn_car" doit etre mappe sur la touche 'F' ou le trigger VR dans l'Input Map
+    if event.is_action_pressed("spawn_car"):
+        spawn_delorean()
+
+func spawn_delorean() -> void:
+    if not delorean_scene:
+        print("[DeLoreanSpawner] Erreur: Aucune scene DeLorean assignee!")
+        return
+        
+    var delorean = delorean_scene.instantiate()
+    get_tree().current_scene.add_child(delorean)
+    
+    # 3 metres devant la camera, 1 metre plus bas
+    var spawn_position = camera.global_position - (camera.global_transform.basis.z * 3.0)
+    spawn_position.y -= 1.0
+    
+    delorean.global_position = spawn_position
+    
+    # Lancement du shader de construction (Visual Effect)
+    # Assumons que le modele a une MeshInstance3D nommée 'CarMesh'
+    if delorean.has_node("CarMesh"):
+        var mesh = delorean.get_node("CarMesh") as MeshInstance3D
+        var material = mesh.get_surface_override_material(0)
+        
+        if material and material is ShaderMaterial:
+            # Animation fluide (Tween) de 0 à 1 en 2.5 secondes
+            var tween = get_tree().create_tween()
+            tween.tween_property(material, "shader_parameter/construction_progress", 1.0, 2.5)
+            print("[DeLoreanSpawner] Materialisation lancee...")
+    else:
+        print("[DeLoreanSpawner] Voiture placee avec succes!")
+"""
+    with open("scripts/vehicles/delorean_spawner.gd", "w", encoding="utf-8") as f:
+        f.write(delorean_spawner_gd)
+    print("-> Wrote scripts/vehicles/delorean_spawner.gd")
+
+    # 3. Third-Person Controller (Emirthab Style for Desktop VR Fallback)
+    tpc_gd = """# Fallback Third-Person Controller for Desktop Testing
+# Based on emirthab's architecture, adapted for Ready Player Me Avatars
+class_name AvatarThirdPersonController
 extends CharacterBody3D
 
-# ==============================================================================
-# PROJET OASIS - emirthab Third-Person Controller (Godot Asset #440 Architecture)
-# Features SpringArm3D collision-avoidance camera, smooth lerp_angle rotation,
-# State Machine (Idle, Walk, Run, Jump, Fall), and Phantom Camera DeLorean cinematic zoom!
-# ==============================================================================
+@export var speed: float = 5.0
+@export var jump_velocity: float = 4.5
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-@export var speed: float = 6.0
-@export var run_speed: float = 10.0
-@export var jump_velocity: float = 4.8
-@export var mouse_sensitivity: float = 0.003
-
-@onready var spring_arm: SpringArm3D = $SpringArm3D
-@onready var camera: Camera3D = $SpringArm3D/Camera3D
-@onready var avatar_mesh: Node3D = $MeshPivot
-
-var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
-var delorean_scene = preload("res://scenes/vehicles/delorean_car.tscn")
-var current_state: String = "IDLE"
+@onready var spring_arm: SpringArm3D = get_node_or_null("SpringArm3D")
+@onready var avatar_mesh: Node3D = get_node_or_null("MeshPivot")
+@onready var anim_tree: AnimationTree = get_node_or_null("MeshPivot/Avatar_RPM/AnimationTree")
 
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		# Mouse orbit camera rotation
-		spring_arm.rotation.x -= event.relative.y * mouse_sensitivity
-		spring_arm.rotation.x = clamp(spring_arm.rotation.x, deg_to_rad(-60.0), deg_to_rad(30.0))
-		spring_arm.rotation.y -= event.relative.x * mouse_sensitivity
-		
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_ESCAPE:
-			if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-				Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			else:
-				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		elif event.keycode == KEY_F:
-			spawn_delorean_with_cinematic_camera()
+    print("[TPC] Controleur 3e Personne initialise pour test bureau.")
 
 func _physics_process(delta: float) -> void:
-	# 1. Gravity & Fall State
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-		current_state = "FALL"
-	else:
-		if current_state == "FALL":
-			current_state = "IDLE"
+    if not is_on_floor():
+        velocity.y -= gravity * delta
 
-	# 2. Jump Handling
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = jump_velocity
-		current_state = "JUMP"
+    if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+        velocity.y = jump_velocity
 
-	# 3. Movement Direction relative to Camera Yaw
-	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	var move_speed = run_speed if Input.is_key_pressed(KEY_SHIFT) else speed
-	
-	var cam_yaw = spring_arm.rotation.y
-	var direction := (Transform3D(Basis(Vector3.UP, cam_yaw), Vector3.ZERO) * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	
-	if direction:
-		velocity.x = direction.x * move_speed
-		velocity.z = direction.z * move_speed
-		if is_on_floor():
-			current_state = "RUN" if Input.is_key_pressed(KEY_SHIFT) else "WALK"
-			
-		# Smooth lerp_angle avatar rotation towards movement direction
-		var target_angle = atan2(-direction.x, -direction.z)
-		avatar_mesh.rotation.y = lerp_angle(avatar_mesh.rotation.y, target_angle, 0.18)
-	else:
-		velocity.x = move_toward(velocity.x, 0, move_speed)
-		velocity.z = move_toward(velocity.z, 0, move_speed)
-		if is_on_floor() and current_state != "JUMP":
-			current_state = "IDLE"
+    # Entrees clavier ZQSD
+    var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+    
+    # Mouvement relatif a la camera si le SpringArm existe
+    var direction := Vector3.ZERO
+    if spring_arm:
+        direction = (spring_arm.global_transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+    else:
+        direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+    
+    if direction:
+        velocity.x = direction.x * speed
+        velocity.z = direction.z * speed
+        
+        if avatar_mesh:
+            # Rotation fluide du mesh vers la direction (Lerp)
+            var target_rotation = atan2(-direction.x, -direction.z)
+            avatar_mesh.rotation.y = lerp_angle(avatar_mesh.rotation.y, target_rotation, 10.0 * delta)
+    else:
+        velocity.x = move_toward(velocity.x, 0, speed)
+        velocity.z = move_toward(velocity.z, 0, speed)
 
-	move_and_slide()
+    # Transmission a l'AnimationTree Mixamo
+    if anim_tree:
+        var current_speed = Vector2(velocity.x, velocity.z).length()
+        anim_tree.set("parameters/BlendSpace1D/blend_position", current_speed)
 
-# Phantom Camera DeLorean Cinematic Transition
-func spawn_delorean_with_cinematic_camera() -> void:
-	var spawn_pos = camera.global_position - (camera.global_transform.basis.z * 4.5)
-	spawn_pos.y = max(spawn_pos.y - 1.0, 0.2)
-	
-	var car = delorean_scene.instantiate()
-	get_tree().current_scene.add_child(car)
-	car.global_position = spawn_pos
-	car.play_construction_effect()
-	
-	# Phantom Camera Style Cinematic Zoom
-	var original_spring_length = spring_arm.spring_length
-	var tween = create_tween()
-	tween.tween_property(spring_arm, "spring_length", 1.8, 0.4) # Zoom in
-	tween.tween_interval(1.5)
-	tween.tween_property(spring_arm, "spring_length", original_spring_length, 0.6) # Zoom out
-	print("🎬 [PHANTOM CAM] Cinematic Zoom onto Materializing DeLorean!")
+    move_and_slide()
 """
+    with open("scripts/player/third_person_controller.gd", "w", encoding="utf-8") as f:
+        f.write(tpc_gd)
+    print("-> Wrote scripts/player/third_person_controller.gd")
 
-write_file(os.path.join(BASE_DIR, "scripts/player_vr/third_person_controller.gd"), CONTROLLER_GD)
+    print("\n[SUCCESS] Demo features for your son have been built!")
 
-# ==============================================================================
-# 2. UPDATE PC_PLAYER SCENE WITH SPRINGARM3D (scenes/player_vr/pc_player.tscn)
-# ==============================================================================
-PC_PLAYER_TSCN = """
-[gd_scene load_steps=13 format=3 uid="uid://pc_player_scene"]
-
-[ext_resource type="Script" path="res://scripts/player_vr/third_person_controller.gd" id="1_controller"]
-[ext_resource type="PackedScene" uid="uid://scene_navigator_ui" path="res://scenes/ui/scene_navigator.tscn" id="2_navigator"]
-[ext_resource type="PackedScene" uid="uid://command_menu_ui" path="res://scenes/ui/command_menu.tscn" id="3_command_menu"]
-[ext_resource type="PackedScene" uid="uid://ai_prompt_tool_ui" path="res://scenes/ui/ai_prompt_tool.tscn" id="4_prompt_tool"]
-[ext_resource type="PackedScene" uid="uid://vr_inventory_system_ui" path="res://scenes/ui/vr_inventory_system.tscn" id="5_inventory"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
-
-[sub_resource type="StandardMaterial3D" id="Mat_MannequinBody"]
-albedo_color = Color(0.85, 0.88, 0.95, 1)
-metallic = 0.8
-roughness = 0.2
-
-[sub_resource type="StandardMaterial3D" id="Mat_Visor"]
-albedo_color = Color(0.0, 0.9, 1.0, 1)
-emission_enabled = true
-emission = Color(0.0, 0.9, 1.0, 1)
-emission_energy_multiplier = 4.0
-
-[sub_resource type="CapsuleMesh" id="Mesh_Torso"]
-material = SubResource("Mat_MannequinBody")
-radius = 0.35
-height = 1.05
-
-[sub_resource type="SphereMesh" id="Mesh_Head"]
-material = SubResource("Mat_MannequinBody")
-radius = 0.22
-height = 0.44
-
-[sub_resource type="BoxMesh" id="Mesh_Visor"]
-material = SubResource("Mat_Visor")
-size = Vector3(0.3, 0.08, 0.12)
-
-[sub_resource type="CylinderMesh" id="Mesh_Limb"]
-material = SubResource("Mat_MannequinBody")
-top_radius = 0.09
-bottom_radius = 0.07
-height = 0.85
-
-[node name="PCPlayer" type="CharacterBody3D" groups=["player"]]
-script = ExtResource("1_controller")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_player")
-
-[node name="MeshPivot" type="Node3D" parent="."]
-
-[node name="Torso" type="MeshInstance3D" parent="MeshPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
-mesh = SubResource("Mesh_Torso")
-
-[node name="Head" type="MeshInstance3D" parent="MeshPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
-mesh = SubResource("Mesh_Head")
-
-[node name="Visor" type="MeshInstance3D" parent="MeshPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.18)
-mesh = SubResource("Mesh_Visor")
-
-[node name="LeftLeg" type="MeshInstance3D" parent="MeshPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.42, 0)
-mesh = SubResource("Mesh_Limb")
-
-[node name="RightLeg" type="MeshInstance3D" parent="MeshPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.42, 0)
-mesh = SubResource("Mesh_Limb")
-
-[node name="SpringArm3D" type="SpringArm3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.9659, 0.2588, 0, -0.2588, 0.9659, 0, 2.2, 0)
-spring_length = 3.5
-
-[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
-current = true
-near = 0.05
-
-[node name="SceneNavigator" parent="." instance=ExtResource("2_navigator")]
-
-[node name="CommandMenu" parent="." instance=ExtResource("3_command_menu")]
-
-[node name="AIPromptTool" parent="." instance=ExtResource("4_prompt_tool")]
-
-[node name="VRInventorySystem" parent="." instance=ExtResource("5_inventory")]
-"""
-
-write_file(os.path.join(BASE_DIR, "scenes/player_vr/pc_player.tscn"), PC_PLAYER_TSCN)
-
-print("emirthab Third Person Controller script & SpringArm3D scene generated successfully!")
+if __name__ == "__main__":
+    build_demo_features()
