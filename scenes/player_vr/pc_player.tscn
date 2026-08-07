@@ -1,43 +1,71 @@
-[gd_scene load_steps=13 format=3 uid="uid://pc_player_scene"]
+[gd_scene load_steps=18 format=3 uid="uid://pc_player_scene"]
 
 [ext_resource type="Script" path="res://scripts/player_vr/third_person_controller.gd" id="1_controller"]
 [ext_resource type="PackedScene" uid="uid://scene_navigator_ui" path="res://scenes/ui/scene_navigator.tscn" id="2_navigator"]
 [ext_resource type="PackedScene" uid="uid://command_menu_ui" path="res://scenes/ui/command_menu.tscn" id="3_command_menu"]
-[ext_resource type="PackedScene" uid="uid://ai_prompt_tool_ui" path="res://scenes/ui/ai_prompt_tool.tscn" id="4_prompt_tool"]
-[ext_resource type="PackedScene" uid="uid://vr_inventory_system_ui" path="res://scenes/ui/vr_inventory_system.tscn" id="5_inventory"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 
-[sub_resource type="StandardMaterial3D" id="Mat_MannequinBody"]
-albedo_color = Color(0.85, 0.88, 0.95, 1)
-metallic = 0.8
+[sub_resource type="StandardMaterial3D" id="Mat_ArmorSuit"]
+albedo_color = Color(0.12, 0.16, 0.24, 1)
+metallic = 0.85
 roughness = 0.2
 
-[sub_resource type="StandardMaterial3D" id="Mat_Visor"]
-albedo_color = Color(0.0, 0.9, 1.0, 1)
-emission_enabled = true
-emission = Color(0.0, 0.9, 1.0, 1)
-emission_energy_multiplier = 4.0
+[sub_resource type="StandardMaterial3D" id="Mat_PlatingGold"]
+albedo_color = Color(0.95, 0.75, 0.2, 1)
+metallic = 0.95
+roughness = 0.15
 
+[sub_resource type="StandardMaterial3D" id="Mat_GlowCyan"]
+albedo_color = Color(0.0, 0.95, 1.0, 1)
+emission_enabled = true
+emission = Color(0.0, 0.95, 1.0, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_SkinFace"]
+albedo_color = Color(0.9, 0.75, 0.65, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_HairParzival"]
+albedo_color = Color(0.8, 0.7, 0.3, 1)
+
+# Body Meshes
 [sub_resource type="CapsuleMesh" id="Mesh_Torso"]
-material = SubResource("Mat_MannequinBody")
-radius = 0.35
-height = 1.05
+material = SubResource("Mat_ArmorSuit")
+radius = 0.32
+height = 0.95
+
+[sub_resource type="BoxMesh" id="Mesh_ChestPlate"]
+material = SubResource("Mat_PlatingGold")
+size = Vector3(0.55, 0.4, 0.2)
+
+[sub_resource type="CylinderMesh" id="Mesh_ArcReactor"]
+material = SubResource("Mat_GlowCyan")
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.1
+
+[sub_resource type="BoxMesh" id="Mesh_ShoulderPad"]
+material = SubResource("Mat_ArmorSuit")
+size = Vector3(0.35, 0.2, 0.3)
 
 [sub_resource type="SphereMesh" id="Mesh_Head"]
-material = SubResource("Mat_MannequinBody")
+material = SubResource("Mat_SkinFace")
 radius = 0.22
 height = 0.44
 
-[sub_resource type="BoxMesh" id="Mesh_Visor"]
-material = SubResource("Mat_Visor")
-size = Vector3(0.3, 0.08, 0.12)
+[sub_resource type="BoxMesh" id="Mesh_VRVisor"]
+material = SubResource("Mat_GlowCyan")
+size = Vector3(0.38, 0.11, 0.16)
 
-[sub_resource type="CylinderMesh" id="Mesh_Limb"]
-material = SubResource("Mat_MannequinBody")
+[sub_resource type="CylinderMesh" id="Mesh_LimbLeg"]
+material = SubResource("Mat_ArmorSuit")
 top_radius = 0.09
 bottom_radius = 0.07
 height = 0.85
+
+[sub_resource type="BoxMesh" id="Mesh_Boot"]
+material = SubResource("Mat_PlatingGold")
+size = Vector3(0.18, 0.15, 0.32)
 
 [node name="PCPlayer" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_controller")
@@ -48,25 +76,50 @@ shape = SubResource("CapsuleShape3D_player")
 
 [node name="MeshPivot" type="Node3D" parent="."]
 
+# Articulated Humanoid Avatar Frame
 [node name="Torso" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 mesh = SubResource("Mesh_Torso")
+
+[node name="ChestArmor" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22, -0.15)
+mesh = SubResource("Mesh_ChestPlate")
+
+[node name="ArcReactor" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.25, -0.26)
+mesh = SubResource("Mesh_ArcReactor")
+
+[node name="ShoulderLeft" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.42, 1.35, 0)
+mesh = SubResource("Mesh_ShoulderPad")
+
+[node name="ShoulderRight" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 1.35, 0)
+mesh = SubResource("Mesh_ShoulderPad")
 
 [node name="Head" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72, 0)
 mesh = SubResource("Mesh_Head")
 
-[node name="Visor" type="MeshInstance3D" parent="MeshPivot"]
+[node name="VRVisor" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, -0.18)
-mesh = SubResource("Mesh_Visor")
+mesh = SubResource("Mesh_VRVisor")
 
 [node name="LeftLeg" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.42, 0)
-mesh = SubResource("Mesh_Limb")
+mesh = SubResource("Mesh_LimbLeg")
 
 [node name="RightLeg" type="MeshInstance3D" parent="MeshPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.42, 0)
-mesh = SubResource("Mesh_Limb")
+mesh = SubResource("Mesh_LimbLeg")
+
+[node name="LeftBoot" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0.08, -0.05)
+mesh = SubResource("Mesh_Boot")
+
+[node name="RightBoot" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0.08, -0.05)
+mesh = SubResource("Mesh_Boot")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.9659, 0.2588, 0, -0.2588, 0.9659, 0, 2.2, 0)
@@ -79,7 +132,3 @@ near = 0.05
 [node name="SceneNavigator" parent="." instance=ExtResource("2_navigator")]
 
 [node name="CommandMenu" parent="." instance=ExtResource("3_command_menu")]
-
-[node name="AIPromptTool" parent="." instance=ExtResource("4_prompt_tool")]
-
-[node name="VRInventorySystem" parent="." instance=ExtResource("5_inventory")]
