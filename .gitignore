@@ -24,3 +24,7 @@ Thumbs.db
 Godot4.exe
 *.log
 
+# Generated / External content (not part of the Godot project)
+GoogleWorld/
+GodotToImport/
+
