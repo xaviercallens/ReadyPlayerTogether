@@ -9,6 +9,7 @@ extends CharacterBody3D
 @onready var body_mesh: Node3D = get_node_or_null("BodyMesh")
 
 var anim_controller: RPMAnimator
+var mixamo_controller: MixamoGodot4Controller
 var time_passed: float = 0.0
 var is_player_near: bool = false
 
@@ -23,6 +24,10 @@ func _ready() -> void:
 		anim_controller = RPMAnimator.new()
 		anim_controller.target_avatar_node = body_mesh
 		add_child(anim_controller)
+		
+		# Intégration de la pipeline Mixamo ➔ Godot 4
+		mixamo_controller = MixamoGodot4Controller.new()
+		add_child(mixamo_controller)
 
 func _process(delta: float) -> void:
 	time_passed += delta
@@ -37,6 +42,8 @@ func _on_body_entered(body: Node3D) -> void:
 			dialogue_label.text = "PARZIVAL: 'Bienvenue Gunter! Traverse le portail 03 pour la course!'"
 		if anim_controller != null:
 			anim_controller.set_state(RPMAnimator.AnimState.WAVE)
+		if mixamo_controller != null:
+			mixamo_controller.play_action("WaveGreeting")
 
 func _on_body_exited(body: Node3D) -> void:
 	if body != null and body.is_in_group("player"):
@@ -45,3 +52,5 @@ func _on_body_exited(body: Node3D) -> void:
 			dialogue_label.text = "PARZIVAL: 'Trouve la Clé de Cuivre!'"
 		if anim_controller != null:
 			anim_controller.set_state(RPMAnimator.AnimState.IDLE)
+		if mixamo_controller != null:
+			mixamo_controller.play_action("Idle")
