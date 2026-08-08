@@ -9,7 +9,7 @@ def write_file(filepath, content):
 
 # ==============================================================================
 # MASTER READY PLAYER ONE MOVIE SPIRIT HUB SCENE (scenes/hub/oasis_master_rpo_movie.tscn)
-# Clean .tscn template without inline # comment lines to guarantee 100% node parsing
+# Open Sky Panoramic View with 5x Reduced Majestic Titans
 # ==============================================================================
 MASTER_HUB_TSCN = """[gd_scene load_steps=20 format=3 uid="uid://master_rpo_movie_hub"]
 
@@ -111,33 +111,33 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 10)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.0)
 
 [node name="IronGiantTitan" parent="." instance=ExtResource("3_iron_giant")]
-transform = Transform3D(4.33, 0, -2.5, 0, 5.0, 0, 2.5, 0, 4.33, -14, 0.2, -8)
+transform = Transform3D(0.866, 0, -0.5, 0, 1.0, 0, 0.5, 0, 0.866, -10, 0.2, -6)
 
 [node name="BumblebeeTitan" parent="." instance=ExtResource("4_bumblebee")]
-transform = Transform3D(4.33, 0, 2.5, 0, 5.0, 0, -2.5, 0, 4.33, 14, 0.2, -8)
+transform = Transform3D(0.866, 0, 0.5, 0, 1.0, 0, -0.5, 0, 0.866, 10, 0.2, -6)
 
 [node name="CyberpunkHovercar" parent="." instance=ExtResource("5_hovercar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -8)
 
 [node name="GodotRobotShooter" parent="." instance=ExtResource("6_godot_robot")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.2, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.2, 2)
 
 [node name="IronGiantLabel" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 18.0, -8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 6.5, -6)
 billboard = 1
-pixel_size = 0.018
-text = "IRON GIANT (Titan Colossus x50)
+pixel_size = 0.015
+text = "IRON GIANT (Titan Robot)
 'I Am Not A Gun!'"
-font_size = 48
-outline_size = 12
+font_size = 42
+outline_size = 10
 
 [node name="BumblebeeLabel" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 18.0, -8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 6.5, -6)
 billboard = 1
-pixel_size = 0.018
-text = "TRANSFORMERS BUMBLEBEE (Titan Mech x50)"
-font_size = 48
-outline_size = 12
+pixel_size = 0.015
+text = "TRANSFORMERS BUMBLEBEE (Titan Mech)"
+font_size = 42
+outline_size = 10
 
 [node name="HovercarLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, -8)
@@ -148,7 +148,7 @@ font_size = 36
 outline_size = 8
 
 [node name="GodotRobotLabel" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 2.5, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 2.5, 2)
 billboard = 1
 pixel_size = 0.015
 text = "GODOT 4 BATTLE ROBOT"
@@ -182,4 +182,4 @@ outline_size = 12
 
 write_file(os.path.join(BASE_DIR, "scenes/hub/oasis_master_rpo_movie.tscn"), MASTER_HUB_TSCN)
 
-print("Master Ready Player One Movie Spirit Hub Scene updated cleanly!")
+print("Master Ready Player One Movie Spirit Hub Scene rebuilt with 5x reduced Titan scale!")
