@@ -9,7 +9,7 @@ def write_file(filepath, content):
 
 # ==============================================================================
 # MASTER READY PLAYER ONE MOVIE SPIRIT HUB SCENE (scenes/hub/oasis_master_rpo_movie.tscn)
-# Direct native ExtResource packed scene instantiation of all 6 GLB 3D models in res://assets/oasis_batch/
+# Open sky global view without ceiling fog cutoff
 # ==============================================================================
 MASTER_HUB_TSCN = """[gd_scene load_steps=22 format=3 uid="uid://master_rpo_movie_hub"]
 
@@ -28,10 +28,10 @@ MASTER_HUB_TSCN = """[gd_scene load_steps=22 format=3 uid="uid://master_rpo_movi
 [ext_resource type="PackedScene" uid="uid://virtual_portal_screen_scene" path="res://scenes/ui/virtual_portal_screen.tscn" id="13_portal"]
 
 [sub_resource type="ProceduralSkyMaterial" id="Sky_RPO"]
-sky_top_color = Color(0.02, 0.04, 0.12, 1)
-sky_horizon_color = Color(0.0, 0.8, 1.0, 1)
-ground_bottom_color = Color(0.01, 0.01, 0.03, 1)
-ground_horizon_color = Color(0.0, 0.8, 1.0, 1)
+sky_top_color = Color(0.05, 0.15, 0.35, 1)
+sky_horizon_color = Color(0.2, 0.7, 1.0, 1)
+ground_bottom_color = Color(0.05, 0.15, 0.35, 1)
+ground_horizon_color = Color(0.2, 0.7, 1.0, 1)
 
 [sub_resource type="Sky" id="Sky_Mesh"]
 sky_material = SubResource("Sky_RPO")
@@ -39,15 +39,14 @@ sky_material = SubResource("Sky_RPO")
 [sub_resource type="Environment" id="Env_RPO"]
 background_mode = 2
 sky = SubResource("Sky_Mesh")
-ambient_light_color = Color(0.0, 0.7, 1.0, 1)
-ambient_light_energy = 1.2
+ambient_light_color = Color(0.3, 0.75, 1.0, 1)
+ambient_light_energy = 1.5
 glow_enabled = true
-glow_intensity = 2.2
-glow_bloom = 0.5
+glow_intensity = 1.2
+glow_bloom = 0.2
 glow_blend_mode = 0
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.005
-volumetric_fog_albedo = Color(0.0, 0.8, 1.0, 1)
+fog_enabled = false
+volumetric_fog_enabled = false
 ssr_enabled = true
 ssao_enabled = true
 
@@ -108,7 +107,7 @@ use_collision = true
 size = Vector3(150, 1, 150)
 
 [node name="PCPlayer" parent="." instance=ExtResource("1_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 10)
 
 [node name="DeLoreanTimeMachine" parent="." instance=ExtResource("2_delorean")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.0)
@@ -207,4 +206,4 @@ outline_size = 12
 
 write_file(os.path.join(BASE_DIR, "scenes/hub/oasis_master_rpo_movie.tscn"), MASTER_HUB_TSCN)
 
-print("Master Ready Player One Movie Spirit Hub Scene updated with native ExtResource GLB paths!")
+print("Master Ready Player One Movie Spirit Hub Scene updated with open sky environment!")

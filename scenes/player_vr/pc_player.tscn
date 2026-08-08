@@ -71,11 +71,12 @@ mesh = SubResource("Mesh_ArcReactor")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.9659, 0.2588, 0, -0.2588, 0.9659, 0, 2.2, 0)
-spring_length = 3.5
+spring_length = 5.5
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
 current = true
 near = 0.05
+far = 2000.0
 
 [node name="SceneNavigator" parent="." instance=ExtResource("2_navigator")]
 
