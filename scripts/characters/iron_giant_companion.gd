@@ -51,4 +51,4 @@ func _process(delta: float) -> void:
 			var current_target = head_ik.target_node
 			if current_target and has_node(current_target):
 				var target_node = get_node(current_target)
-				target_node.global_position = target_node.global_position.lerp(target_pos, delta * 2.0)
+				target_node.global_position = target_node.global_position.lerp(target_pos, delta * 2.0)

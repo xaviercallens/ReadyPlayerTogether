@@ -117,10 +117,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.0)
 
 # Batch-Forged OASIS 3D Models
 [node name="IronGiantTitan" parent="." instance=ExtResource("3_iron_giant")]
-transform = Transform3D(0.866, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866, -14, 0.2, -8)
+transform = Transform3D(4.33, 0, -2.5, 0, 5.0, 0, 2.5, 0, 4.33, -14, 0.2, -8)
 
 [node name="BumblebeeTitan" parent="." instance=ExtResource("4_bumblebee")]
-transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, 14, 0.2, -8)
+transform = Transform3D(4.33, 0, 2.5, 0, 5.0, 0, -2.5, 0, 4.33, 14, 0.2, -8)
 
 [node name="CyberpunkCharacterNPC" parent="." instance=ExtResource("5_cyber_char")]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 5, 0.2, 3)

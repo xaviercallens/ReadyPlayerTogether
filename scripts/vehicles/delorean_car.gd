@@ -108,4 +108,3 @@ func _process(delta: float) -> void:
 	if driver_label != null:
 		var visemes = ["88 MPH!", "Flux Capacitor Active", "OASIS Cruise Mode", "Ready Player One!"]
 		driver_label.text = "PARZIVAL: " + visemes[int(time_passed * 2.0) % visemes.size()]
-
