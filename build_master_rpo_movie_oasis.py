@@ -9,19 +9,23 @@ def write_file(filepath, content):
 
 # ==============================================================================
 # MASTER READY PLAYER ONE MOVIE SPIRIT HUB SCENE (scenes/hub/oasis_master_rpo_movie.tscn)
+# Integrates all 8 batch-forged GLB 3D models from res://assets/oasis_batch/
 # ==============================================================================
-MASTER_HUB_TSCN = """
-[gd_scene load_steps=20 format=3 uid="uid://master_rpo_movie_hub"]
+MASTER_HUB_TSCN = """[gd_scene load_steps=22 format=3 uid="uid://master_rpo_movie_hub"]
 
 [ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://delorean_car_scene" path="res://scenes/vehicles/delorean_car.tscn" id="2_delorean"]
-[ext_resource type="PackedScene" uid="uid://gundam_mech_scene" path="res://scenes/characters/gundam_mech.tscn" id="3_gundam"]
-[ext_resource type="PackedScene" uid="uid://iron_giant_companion_scene" path="res://scenes/characters/iron_giant_companion.tscn" id="4_irongiant"]
-[ext_resource type="PackedScene" uid="uid://hoverboard_artifact_scene" path="res://scenes/artifacts/hoverboard.tscn" id="5_hoverboard"]
-[ext_resource type="PackedScene" uid="uid://orb_osuvox_artifact_scene" path="res://scenes/artifacts/orb_osuvox.tscn" id="6_osuvox"]
-[ext_resource type="PackedScene" uid="uid://zemeckis_cube_scene" path="res://scenes/artifacts/zemeckis_cube.tscn" id="7_zemeckis"]
-[ext_resource type="PackedScene" uid="uid://holy_hand_grenade_scene" path="res://scenes/artifacts/holy_hand_grenade.tscn" id="8_grenade"]
-[ext_resource type="PackedScene" uid="uid://virtual_portal_screen_scene" path="res://scenes/ui/virtual_portal_screen.tscn" id="9_portal"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/3d_iron_giant_assignment_OASIS.tscn" id="3_iron_giant"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/transformers_bumblebee_OASIS.tscn" id="4_bumblebee"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/cyberpunk_character_OASIS.tscn" id="5_cyber_char"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/cyberpunk_police_bot_animation_ready_2_OASIS.tscn" id="6_police_bot"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/free_cyberpunk_hovercar_OASIS.tscn" id="7_hovercar"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/GodotRobot3rdPersonShooterFinal_OASIS.tscn" id="8_godot_robot"]
+[ext_resource type="PackedScene" uid="uid://hoverboard_artifact_scene" path="res://scenes/artifacts/hoverboard.tscn" id="9_hoverboard"]
+[ext_resource type="PackedScene" uid="uid://orb_osuvox_artifact_scene" path="res://scenes/artifacts/orb_osuvox.tscn" id="10_osuvox"]
+[ext_resource type="PackedScene" uid="uid://zemeckis_cube_scene" path="res://scenes/artifacts/zemeckis_cube.tscn" id="11_zemeckis"]
+[ext_resource type="PackedScene" uid="uid://holy_hand_grenade_scene" path="res://scenes/artifacts/holy_hand_grenade.tscn" id="12_grenade"]
+[ext_resource type="PackedScene" uid="uid://virtual_portal_screen_scene" path="res://scenes/ui/virtual_portal_screen.tscn" id="13_portal"]
 
 [sub_resource type="ProceduralSkyMaterial" id="Sky_RPO"]
 sky_top_color = Color(0.02, 0.04, 0.12, 1)
@@ -103,31 +107,47 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0, 0)
 use_collision = true
 size = Vector3(150, 1, 150)
 
+# Playable GDQuest Mannequin Parzival Player
 [node name="PCPlayer" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 8)
 
+# Central DeLorean Time Machine
 [node name="DeLoreanTimeMachine" parent="." instance=ExtResource("2_delorean")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.0)
 
-[node name="GundamRX78Mech" parent="." instance=ExtResource("3_gundam")]
-transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -12, 0.2, -6)
+# Batch-Forged OASIS 3D Models
+[node name="IronGiantTitan" parent="." instance=ExtResource("3_iron_giant")]
+transform = Transform3D(0.866, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866, -14, 0.2, -8)
 
-[node name="IronGiantCompanion" parent="." instance=ExtResource("4_irongiant")]
-transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 12, 0.2, -6)
+[node name="BumblebeeTitan" parent="." instance=ExtResource("4_bumblebee")]
+transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, 14, 0.2, -8)
 
-[node name="CyberpunkHoverboard" parent="." instance=ExtResource("5_hoverboard")]
+[node name="CyberpunkCharacterNPC" parent="." instance=ExtResource("5_cyber_char")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 5, 0.2, 3)
+
+[node name="CyberpunkPoliceBot" parent="." instance=ExtResource("6_police_bot")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -5, 0.2, 3)
+
+[node name="CyberpunkHovercar" parent="." instance=ExtResource("7_hovercar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -8)
+
+[node name="GodotRobotShooter" parent="." instance=ExtResource("8_godot_robot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.2, 2)
+
+# Interactive RPO Artifacts
+[node name="CyberpunkHoverboard" parent="." instance=ExtResource("9_hoverboard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.2, 2.0)
 
-[node name="OrbOfOsuvox" parent="." instance=ExtResource("6_osuvox")]
+[node name="OrbOfOsuvox" parent="." instance=ExtResource("10_osuvox")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.2, 2.0)
 
-[node name="ZemeckisCube" parent="." instance=ExtResource("7_zemeckis")]
+[node name="ZemeckisCube" parent="." instance=ExtResource("11_zemeckis")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0, 1.2, 0.0)
 
-[node name="HolyHandGrenade" parent="." instance=ExtResource("8_grenade")]
+[node name="HolyHandGrenade" parent="." instance=ExtResource("12_grenade")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0, 1.2, 0.0)
 
-[node name="VirtualPortalScreen" parent="." instance=ExtResource("9_portal")]
+[node name="VirtualPortalScreen" parent="." instance=ExtResource("13_portal")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -18.0)
 
 [node name="MasterTitle" type="Label3D" parent="."]
@@ -142,4 +162,4 @@ outline_size = 12
 
 write_file(os.path.join(BASE_DIR, "scenes/hub/oasis_master_rpo_movie.tscn"), MASTER_HUB_TSCN)
 
-print("Master Ready Player One Movie Spirit Hub Scene regenerated with solid ground physics!")
+print("Master Ready Player One Movie Spirit Hub Scene updated with all 8 batch GLB models!")
