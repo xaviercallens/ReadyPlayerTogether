@@ -9,7 +9,7 @@ def write_file(filepath, content):
 
 # ==============================================================================
 # MASTER READY PLAYER ONE MOVIE SPIRIT HUB SCENE (scenes/hub/oasis_master_rpo_movie.tscn)
-# Integrates all 6 batch-forged GLB 3D models from res://assets/oasis_batch/ with holographic Labels
+# Clean .tscn format without inline # comment lines to prevent parser node skipping
 # ==============================================================================
 MASTER_HUB_TSCN = """[gd_scene load_steps=22 format=3 uid="uid://master_rpo_movie_hub"]
 
@@ -107,15 +107,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.0, 0)
 use_collision = true
 size = Vector3(150, 1, 150)
 
-# Playable GDQuest Mannequin Parzival Player
 [node name="PCPlayer" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 8)
 
-# Central DeLorean Time Machine
 [node name="DeLoreanTimeMachine" parent="." instance=ExtResource("2_delorean")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.0)
 
-# 📦 6 Batch-Forged OASIS 3D Models (res://assets/oasis_batch/)
 [node name="IronGiantTitan" parent="." instance=ExtResource("3_iron_giant")]
 transform = Transform3D(4.33, 0, -2.5, 0, 5.0, 0, 2.5, 0, 4.33, -14, 0.2, -8)
 
@@ -134,7 +131,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -8)
 [node name="GodotRobotShooter" parent="." instance=ExtResource("8_godot_robot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.2, 2)
 
-# Holographic 3D Labels (Parent = ".")
 [node name="IronGiantLabel" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 18.0, -8)
 billboard = 1
@@ -184,7 +180,6 @@ text = "GODOT 4 BATTLE ROBOT"
 font_size = 36
 outline_size = 8
 
-# Interactive RPO Artifacts
 [node name="CyberpunkHoverboard" parent="." instance=ExtResource("9_hoverboard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0.2, 2.0)
 
@@ -212,4 +207,4 @@ outline_size = 12
 
 write_file(os.path.join(BASE_DIR, "scenes/hub/oasis_master_rpo_movie.tscn"), MASTER_HUB_TSCN)
 
-print("Master Ready Player One Movie Spirit Hub Scene updated cleanly!")
+print("Master Ready Player One Movie Spirit Hub Scene rebuilt without inline # comments!")
