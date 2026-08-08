@@ -4,7 +4,7 @@ color 0A
 cls
 echo =======================================================================
 echo    WELCOME TO THE OASIS - READY PLAYER ONE DESKTOP SHOWCASE DEMO
-echo    Mode Bureau (Desktop 3D) - GDQuest Mannequin & High Detail Models
+echo    Mode Bureau (Desktop 3D) - GDQuest Mannequin and High Detail Models
 echo =======================================================================
 echo.
 
