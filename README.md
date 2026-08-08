@@ -2,6 +2,22 @@
 
 Inspired by Ready Player One, built for Meta Quest VR headset.
 
+## Roadmap
+
+Le projet évolue en **trois phases** pour permettre au Pilote de monter en compétence progressivement :
+
+1. **GenieRedux** - Jeu 2D rétro / arcade généré par Matrix-Game.
+2. **GenieGodot** - Immersion VR 3D légère avec Godot 4.
+3. **GenieOasis** - Photoréalisme avec Unreal Engine 5.
+
+→ Voir [`docs/ROADMAP.md`](docs/ROADMAP.md) pour le détail.
+
+## Architecture
+
+Le backend "Salle des Machines Invariable" reste le même pour toutes les phases. Seul le frontend change.
+
+→ Voir [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) pour le détail.
+
 ## Project Structure
 - `Hub/`: Central OASIS lounge & portal navigation.
 - `CopperKey/`: Speed & Dodge mini-game.
@@ -9,6 +25,7 @@ Inspired by Ready Player One, built for Meta Quest VR headset.
 - `CrystalKey/`: AI NPC Guardian & Easter Egg secret room.
 - `Avatars/`: Ready Player Me integration assets.
 - `AI_Services/`: Local/API AI integrations (GenAI 3D textures, avatar voice, world simulation).
+- `Server_AI/fonderie_oasis_api.py`: Backend FastAPI unifié.
 
 ## Team Roles
 - **Pilot (Son, 10yo)**: Gameplay mechanics, level design, object interactions, Blueprint/Visual logic.
