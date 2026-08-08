@@ -1,0 +1,133 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/genie_oasis_redux_world.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/player_vr/pc_player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/vehicles/delorean_car.tscn" id="3_delorean"]
+[ext_resource type="Script" path="res://scripts/player_vr/third_person_controller.gd" id="4_l7rm4"]
+[ext_resource type="PackedScene" path="res://scenes/characters/parzival_companion_robot.tscn" id="4_parzivalrobot"]
+[ext_resource type="PackedScene" path="res://scenes/characters/transformer_bumblebee.tscn" id="5_bumblebee"]
+[ext_resource type="PackedScene" path="res://scenes/characters/gundam_mech.tscn" id="6_gundam"]
+[ext_resource type="PackedScene" path="res://scenes/characters/iron_giant_assignment.tscn" id="7_irongiant"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hologram_plaque.tscn" id="8_plaque"]
+[ext_resource type="Script" path="res://scripts/characters/transformer_bumblebee.gd" id="9_glgfm"]
+[ext_resource type="Shader" path="res://assets/shaders/synthwave_grid.gdshader" id="9_gridshader"]
+
+[sub_resource type="ProceduralSkyMaterial" id="Sky_Redux"]
+sky_top_color = Color(0.03, 0.04, 0.07, 1)
+sky_horizon_color = Color(0.12, 0.14, 0.2, 1)
+ground_bottom_color = Color(0.02, 0.02, 0.03, 1)
+ground_horizon_color = Color(0.08, 0.09, 0.12, 1)
+
+[sub_resource type="Sky" id="Sky_Mesh"]
+sky_material = SubResource("Sky_Redux")
+
+[sub_resource type="Environment" id="Env_Redux"]
+background_mode = 2
+sky = SubResource("Sky_Mesh")
+ambient_light_color = Color(0.2, 0.25, 0.35, 1)
+ambient_light_energy = 0.6
+ssao_enabled = true
+glow_enabled = true
+glow_intensity = 0.4
+glow_bloom = 0.05
+glow_blend_mode = 0
+
+[sub_resource type="CylinderShape3D" id="Shape_PlazaFloor"]
+height = 1.0
+radius = 90.0
+
+[sub_resource type="ShaderMaterial" id="Mat_SynthwaveGrid"]
+render_priority = 0
+shader = ExtResource("9_gridshader")
+shader_parameter/grid_color = Color(0.15, 0.45, 0.65, 1)
+shader_parameter/base_color = Color(0.04, 0.05, 0.07, 1)
+shader_parameter/grid_scale = 75.0
+shader_parameter/line_thickness = 0.003
+shader_parameter/emission_energy = 0.4
+
+[sub_resource type="CylinderMesh" id="Mesh_ReduxPlaza"]
+material = SubResource("Mat_SynthwaveGrid")
+top_radius = 90.0
+bottom_radius = 90.0
+height = 0.5
+
+[sub_resource type="Environment" id="Environment_lofiy"]
+tonemap_mode = 3
+sdfgi_enabled = true
+sdfgi_use_occlusion = true
+glow_enabled = true
+glow_intensity = 1.5
+glow_strength = 1.1
+glow_bloom = 0.2
+glow_blend_mode = 0
+volumetric_fog_enabled = true
+volumetric_fog_albedo = Color(0.1, 0.4, 0.6, 1)
+volumetric_fog_emission = Color(0.02, 0.05, 0.1, 1)
+
+[node name="GenieOASISReduxWorld" type="Node3D" unique_id=503168494]
+script = ExtResource("1_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=260518182]
+environment = SubResource("Env_Redux")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=92936063]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 30, 0)
+light_color = Color(0.85, 0.9, 0.95, 1)
+light_energy = 0.8
+shadow_enabled = true
+
+[node name="Terrain" type="StaticBody3D" parent="." unique_id=564508518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Terrain" unique_id=226615353]
+shape = SubResource("Shape_PlazaFloor")
+
+[node name="Mesh" type="MeshInstance3D" parent="Terrain" unique_id=81720778]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("Mesh_ReduxPlaza")
+
+[node name="PCPlayer" type="CharacterBody3D" parent="." unique_id=1131491195 groups=["player"] instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 15)
+script = ExtResource("4_l7rm4")
+
+[node name="Plaque_Parzival" type="Node3D" parent="." unique_id=1679547928 instance=ExtResource("8_plaque")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.25, 13.5)
+
+[node name="ParzivalCompanionRobot" type="CharacterBody3D" parent="." unique_id=1958839215 instance=ExtResource("4_parzivalrobot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1.5, 12)
+
+[node name="Plaque_DeLorean" type="Node3D" parent="." unique_id=800792906 instance=ExtResource("8_plaque")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 5)
+
+[node name="DeLoreanTimeMachine" type="CharacterBody3D" parent="." unique_id=155436570 instance=ExtResource("3_delorean")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 3)
+
+[node name="Plaque_Bumblebee" type="Node3D" parent="." unique_id=342138102 instance=ExtResource("8_plaque")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.25, -7)
+
+[node name="TransformerBumblebee" type="CharacterBody3D" parent="." unique_id=2059726583 instance=ExtResource("5_bumblebee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.2, -10)
+script = ExtResource("9_glgfm")
+
+[node name="Plaque_Gundam" type="Node3D" parent="." unique_id=24468448 instance=ExtResource("8_plaque")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -15, 0.25, -8)
+
+[node name="GundamRX78Mech" type="CharacterBody3D" parent="." unique_id=24117752 instance=ExtResource("6_gundam")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -18, 0.2, -10)
+
+[node name="Plaque_IronGiant" type="Node3D" parent="." unique_id=1224172794 instance=ExtResource("8_plaque")]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 15, 0.25, -8)
+
+[node name="IronGiantAssignment" type="CharacterBody3D" parent="." unique_id=2002358405 instance=ExtResource("7_irongiant")]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 18, 0.2, -10)
+
+[node name="ArtPassEnvironment" type="WorldEnvironment" parent="." unique_id=258972298]
+environment = SubResource("Environment_lofiy")
+
+[node name="CinematicSun" type="DirectionalLight3D" parent="." unique_id=1662185519]
+transform = Transform3D(-0.9396926, -0.19617474, 0.28016657, 0, 0.81915206, 0.57357645, -0.3420202, 0.53898555, -0.76975113, 0, 0, 0)
+light_color = Color(1, 0.9, 0.7, 1)
+light_energy = 3.0
+light_volumetric_fog_energy = 4.0
+shadow_enabled = true
+directional_shadow_blend_splits = true

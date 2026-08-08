@@ -1,0 +1,122 @@
+[gd_scene load_steps=14 format=3 uid="uid://parzival_companion_robot_scene"]
+
+[ext_resource type="Script" path="res://scripts/characters/parzival_companion_robot.gd" id="1_script"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_RobotCyanBody"]
+albedo_color = Color(0.15, 0.65, 0.85, 1)
+metallic = 0.85
+roughness = 0.2
+
+[sub_resource type="StandardMaterial3D" id="Mat_RobotWhiteArmor"]
+albedo_color = Color(0.9, 0.92, 0.95, 1)
+metallic = 0.6
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_RobotEyeGlow"]
+albedo_color = Color(0.0, 0.9, 1.0, 1)
+emission_enabled = true
+emission = Color(0.0, 0.9, 1.0, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_RobotSteelJoints"]
+albedo_color = Color(0.18, 0.2, 0.24, 1)
+metallic = 0.95
+roughness = 0.2
+
+[sub_resource type="SphereMesh" id="Mesh_RobotHead"]
+material = SubResource("Mat_RobotWhiteArmor")
+radius = 0.65
+height = 1.3
+
+[sub_resource type="BoxMesh" id="Mesh_RobotVisor"]
+material = SubResource("Mat_RobotEyeGlow")
+size = Vector3(0.7, 0.22, 0.25)
+
+[sub_resource type="CylinderMesh" id="Mesh_RobotTorso"]
+material = SubResource("Mat_RobotCyanBody")
+top_radius = 0.55
+bottom_radius = 0.4
+height = 1.1
+
+[sub_resource type="SphereMesh" id="Mesh_CoreReactor"]
+material = SubResource("Mat_RobotEyeGlow")
+radius = 0.25
+height = 0.5
+
+[sub_resource type="SphereMesh" id="Mesh_ShoulderPod"]
+material = SubResource("Mat_RobotSteelJoints")
+radius = 0.28
+height = 0.56
+
+[sub_resource type="CylinderMesh" id="Mesh_ThrusterEngine"]
+material = SubResource("Mat_RobotEyeGlow")
+top_radius = 0.3
+bottom_radius = 0.1
+height = 0.4
+
+[sub_resource type="CylinderShape3D" id="Shape_Interact"]
+height = 3.5
+radius = 5.5
+
+[node name="ParzivalCompanionRobot" type="CharacterBody3D"]
+script = ExtResource("1_script")
+
+[node name="MeshPivot" type="Node3D" parent="."]
+
+[node name="Head" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+mesh = SubResource("Mesh_RobotHead")
+
+[node name="EyeVisor" type="MeshInstance3D" parent="MeshPivot/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -0.52)
+mesh = SubResource("Mesh_RobotVisor")
+
+[node name="Torso" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("Mesh_RobotTorso")
+
+[node name="CoreReactor" type="MeshInstance3D" parent="MeshPivot/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -0.35)
+mesh = SubResource("Mesh_CoreReactor")
+
+[node name="ShoulderLeft" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 1.0, 0)
+mesh = SubResource("Mesh_ShoulderPod")
+
+[node name="ShoulderRight" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 1.0, 0)
+mesh = SubResource("Mesh_ShoulderPod")
+
+[node name="ThrusterBottom" type="MeshInstance3D" parent="MeshPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("Mesh_ThrusterEngine")
+
+[node name="CoreLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -0.5)
+light_color = Color(0.0, 0.9, 1.0, 1)
+light_energy = 2.0
+omni_range = 4.5
+
+[node name="NameTag" type="Label3D" parent="."]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+modulate = Color(0.9, 0.95, 1.0, 0.55)
+billboard = 1
+pixel_size = 0.007
+text = "PARZIVAL ROBOT COMPANION (AGChow 3D Platformer)"
+font_size = 20
+outline_size = 2
+
+[node name="DialogueLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+modulate = Color(0.95, 0.97, 1.0, 0.6)
+billboard = 1
+pixel_size = 0.007
+text = "PARZIVAL COMPANION ROBOT [OASIS AI Assistant]"
+font_size = 22
+outline_size = 2
+
+[node name="InteractionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+shape = SubResource("Shape_Interact")

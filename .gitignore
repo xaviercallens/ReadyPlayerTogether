@@ -29,3 +29,8 @@ Godot4.exe
 GoogleWorld/
 GodotToImport/
 
+# Large binary 3D models (keep .glb.import config, but not the binary itself)
+assets/iron_giant/*.glb
+assets/imported/*.glb
+
+

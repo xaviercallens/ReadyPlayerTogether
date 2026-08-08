@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[node name="3d_Iron_Giant_Assignment" type="Node3D" unique_id=1893073259]
+
+[node name="Model" type="Node3D" parent="." unique_id=84208559]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)

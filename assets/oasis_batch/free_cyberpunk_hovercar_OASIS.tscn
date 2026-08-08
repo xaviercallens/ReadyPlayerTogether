@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[node name="Free_Cyberpunk_Hovercar" type="Node3D" unique_id=58992362]
+
+[node name="Model" type="Node3D" parent="." unique_id=1939278695]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
