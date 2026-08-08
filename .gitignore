@@ -33,4 +33,9 @@ GodotToImport/
 assets/iron_giant/*.glb
 assets/imported/*.glb
 
+# Generated datasets / output (too large for GitHub)
+Server_AI/genie_redux_rtx2070/data/*.npy
+Server_AI/genie_redux_rtx2070/output/*.gif
+Server_AI/genie_redux_rtx2070/checkpoints/*.pt
+
 

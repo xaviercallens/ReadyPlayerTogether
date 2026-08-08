@@ -9,18 +9,18 @@ def write_file(filepath, content):
 
 # ==============================================================================
 # MASTER READY PLAYER ONE MOVIE SPIRIT HUB SCENE (scenes/hub/oasis_master_rpo_movie.tscn)
-# Clean .tscn format without inline # comment lines to prevent parser node skipping
+# Direct native ExtResource packed scene instantiation of all 6 GLB 3D models in res://assets/oasis_batch/
 # ==============================================================================
 MASTER_HUB_TSCN = """[gd_scene load_steps=22 format=3 uid="uid://master_rpo_movie_hub"]
 
 [ext_resource type="PackedScene" uid="uid://pc_player_scene" path="res://scenes/player_vr/pc_player.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://delorean_car_scene" path="res://scenes/vehicles/delorean_car.tscn" id="2_delorean"]
-[ext_resource type="PackedScene" path="res://assets/oasis_batch/3d_iron_giant_assignment_OASIS.tscn" id="3_iron_giant"]
-[ext_resource type="PackedScene" path="res://assets/oasis_batch/transformers_bumblebee_OASIS.tscn" id="4_bumblebee"]
-[ext_resource type="PackedScene" path="res://assets/oasis_batch/cyberpunk_character_OASIS.tscn" id="5_cyber_char"]
-[ext_resource type="PackedScene" path="res://assets/oasis_batch/cyberpunk_police_bot_animation_ready_2_OASIS.tscn" id="6_police_bot"]
-[ext_resource type="PackedScene" path="res://assets/oasis_batch/free_cyberpunk_hovercar_OASIS.tscn" id="7_hovercar"]
-[ext_resource type="PackedScene" path="res://assets/oasis_batch/GodotRobot3rdPersonShooterFinal_OASIS.tscn" id="8_godot_robot"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/3d_iron_giant_assignment.glb" id="3_iron_giant"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/transformers_bumblebee.glb" id="4_bumblebee"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/cyberpunk_character.glb" id="5_cyber_char"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/cyberpunk_police_bot_animation_ready (2).glb" id="6_police_bot"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/free_cyberpunk_hovercar.glb" id="7_hovercar"]
+[ext_resource type="PackedScene" path="res://assets/oasis_batch/GodotRobot3rdPersonShooterFinal.glb" id="8_godot_robot"]
 [ext_resource type="PackedScene" uid="uid://hoverboard_artifact_scene" path="res://scenes/artifacts/hoverboard.tscn" id="9_hoverboard"]
 [ext_resource type="PackedScene" uid="uid://orb_osuvox_artifact_scene" path="res://scenes/artifacts/orb_osuvox.tscn" id="10_osuvox"]
 [ext_resource type="PackedScene" uid="uid://zemeckis_cube_scene" path="res://scenes/artifacts/zemeckis_cube.tscn" id="11_zemeckis"]
@@ -207,4 +207,4 @@ outline_size = 12
 
 write_file(os.path.join(BASE_DIR, "scenes/hub/oasis_master_rpo_movie.tscn"), MASTER_HUB_TSCN)
 
-print("Master Ready Player One Movie Spirit Hub Scene rebuilt without inline # comments!")
+print("Master Ready Player One Movie Spirit Hub Scene updated with native ExtResource GLB paths!")
