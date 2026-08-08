@@ -9,7 +9,7 @@ def write_file(filepath, content):
 
 # ==============================================================================
 # MASTER READY PLAYER ONE MOVIE SPIRIT HUB SCENE (scenes/hub/oasis_master_rpo_movie.tscn)
-# Integrates all 8 batch-forged GLB 3D models from res://assets/oasis_batch/
+# Integrates all 6 batch-forged GLB 3D models from res://assets/oasis_batch/ with holographic Labels
 # ==============================================================================
 MASTER_HUB_TSCN = """[gd_scene load_steps=22 format=3 uid="uid://master_rpo_movie_hub"]
 
@@ -115,24 +115,73 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 8)
 [node name="DeLoreanTimeMachine" parent="." instance=ExtResource("2_delorean")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -1.0)
 
-# Batch-Forged OASIS 3D Models
+# 📦 6 Batch-Forged OASIS 3D Models (res://assets/oasis_batch/)
 [node name="IronGiantTitan" parent="." instance=ExtResource("3_iron_giant")]
 transform = Transform3D(4.33, 0, -2.5, 0, 5.0, 0, 2.5, 0, 4.33, -14, 0.2, -8)
+
+[node name="IronGiantLabel" type="Label3D" parent="IronGiantTitan"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+billboard = 1
+pixel_size = 0.015
+text = "IRON GIANT (Titan Colossus x50)
+'I Am Not A Gun!'"
+font_size = 42
+outline_size = 10
 
 [node name="BumblebeeTitan" parent="." instance=ExtResource("4_bumblebee")]
 transform = Transform3D(4.33, 0, 2.5, 0, 5.0, 0, -2.5, 0, 4.33, 14, 0.2, -8)
 
+[node name="BumblebeeLabel" type="Label3D" parent="BumblebeeTitan"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+billboard = 1
+pixel_size = 0.015
+text = "TRANSFORMERS BUMBLEBEE (Titan Mech x50)"
+font_size = 42
+outline_size = 10
+
 [node name="CyberpunkCharacterNPC" parent="." instance=ExtResource("5_cyber_char")]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 5, 0.2, 3)
+
+[node name="CyberpunkCharLabel" type="Label3D" parent="CyberpunkCharacterNPC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+billboard = 1
+pixel_size = 0.015
+text = "CYBERPUNK AVATAR (Interactive NPC)"
+font_size = 36
+outline_size = 8
 
 [node name="CyberpunkPoliceBot" parent="." instance=ExtResource("6_police_bot")]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, -5, 0.2, 3)
 
+[node name="PoliceBotLabel" type="Label3D" parent="CyberpunkPoliceBot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+billboard = 1
+pixel_size = 0.015
+text = "CYBERPUNK POLICE ENFORCER BOT"
+font_size = 36
+outline_size = 8
+
 [node name="CyberpunkHovercar" parent="." instance=ExtResource("7_hovercar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -8)
 
+[node name="HovercarLabel" type="Label3D" parent="CyberpunkHovercar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+billboard = 1
+pixel_size = 0.015
+text = "CYBERPUNK HOVERCAR (Sky Vehicle)"
+font_size = 36
+outline_size = 8
+
 [node name="GodotRobotShooter" parent="." instance=ExtResource("8_godot_robot")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.2, 2)
+
+[node name="GodotRobotLabel" type="Label3D" parent="GodotRobotShooter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+billboard = 1
+pixel_size = 0.015
+text = "GODOT 4 BATTLE ROBOT"
+font_size = 36
+outline_size = 8
 
 # Interactive RPO Artifacts
 [node name="CyberpunkHoverboard" parent="." instance=ExtResource("9_hoverboard")]
@@ -162,4 +211,4 @@ outline_size = 12
 
 write_file(os.path.join(BASE_DIR, "scenes/hub/oasis_master_rpo_movie.tscn"), MASTER_HUB_TSCN)
 
-print("Master Ready Player One Movie Spirit Hub Scene updated with all 8 batch GLB models!")
+print("Master Ready Player One Movie Spirit Hub Scene updated with all 6 batch models and 3D labels!")
