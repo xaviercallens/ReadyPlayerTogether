@@ -12,6 +12,14 @@ Le projet évolue en **trois phases** pour permettre au Pilote de monter en comp
 
 → Voir [`docs/ROADMAP.md`](docs/ROADMAP.md) pour le détail.
 
+## Spécification Phasée
+
+Chaque phase dispose de livrables, critères d'acceptation et tâches GitHub détaillés.
+
+→ Voir [`docs/PHASED_SPECIFICATION.md`](docs/PHASED_SPECIFICATION.md).
+
+→ Configuration du tableau GitHub Project : [`specs/GITHUB_PROJECT_SETUP.md`](specs/GITHUB_PROJECT_SETUP.md).
+
 ## Architecture
 
 Le backend "Salle des Machines Invariable" reste le même pour toutes les phases. Seul le frontend change.
